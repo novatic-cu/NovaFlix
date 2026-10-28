@@ -1,25 +1,24 @@
-Origin: NovaFlix
-Label: NovaFlix
-Suite: stable
+Architectures: amd64
 Codename: stable
-Architectures: amd64 arm64
 Components: main
+Date: Wed, 28 Oct 2026 18:27:38 +0000
 Description: Buscador de escritorio para catalogos multimedia publicos
-Date: Wed, 28 Oct 2026 18:24:14 +0000
-Date: Wed, 28 Oct 2026 18:24:14 +0000
+Label: NovaFlix
+Origin: NovaFlix
+Suite: stable
 MD5Sum:
- 7f14c0c1a536b43fe123e2106a36d31e              657 Packages
- e6828de776c43f96489f741d5683e71a              460 Packages.gz
- 80be1cfc9f1c6ed3917a45f10db4b043              255 Release
+ dccf3dc2d1ebafcec77b3c741788b3c3              211 Release
+ 7f14c0c1a536b43fe123e2106a36d31e              657 main/binary-amd64/Packages
+ 38d541727b90686a8429cca3d356c853              460 main/binary-amd64/Packages.gz
 SHA1:
- 013a5ab7770ff9258970de0cf19694f9d7801873              657 Packages
- 96ea110ed4e85ca27be49f1162d5917795ab6a6c              460 Packages.gz
- 64ec7e79ddb564cc17ff37984e451df6954ed086              255 Release
+ 9618c95a4e232b974b36b68aa782db941b326c67              211 Release
+ 013a5ab7770ff9258970de0cf19694f9d7801873              657 main/binary-amd64/Packages
+ b7500c1e2a159d7e6afbea49e24fc72d309b6d70              460 main/binary-amd64/Packages.gz
 SHA256:
- 9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 Packages
- 99faf44bc144da90f8505a6c27d3e18a81eed49ddb7e5187949b793e3e507b91              460 Packages.gz
- eb8e421130f36c6b255414cd8afee1c6e4c7a2a1eaede023b5e28eea0421fc44              255 Release
+ 37036d58be60253e0b2c1b2ee20e3312fe4913348ef197c74c331ace17d3690b              211 Release
+ 9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 main/binary-amd64/Packages
+ 090c39edc4f17508859243b1ef58709def4be545873a2bdb5c573fbd191f44bc              460 main/binary-amd64/Packages.gz
 SHA512:
- d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 Packages
- c9ffa6ffccee54a54abaf4c76d2ca4c6256d7e58cb811bbb75383db4b6e4c77403d09dbdd25457f148122c0c72aa6286283141fee77f06701d87392c7cabe2d2              460 Packages.gz
- 8f9e14d7421b61260c9816ebcbdf4bf1841e125ed5421bc60deb7b6b5eed7d607f1de29aa83811da222e9d64b6d64eb7283c456020f4fd70e8264dc67670117b              255 Release
+ 2b1a10995e74cd6d7e9ede31cb35dc83cef43b0ce9ffce219749563e9a4d1dfc6f3cd0a3bda3fb2a9b70a0fe1bd96f513ddd8f24e32975ff0a67ba9455772e42              211 Release
+ d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 main/binary-amd64/Packages
+ d93a1ba2f81e863a0df1da4655855892b98e612119800af4cd52617df48be7fa3c73f79ad9f3e06634ce84281e55866643907bedf7b7c1f59086184cdce32a8c              460 main/binary-amd64/Packages.gz
