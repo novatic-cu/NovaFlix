@@ -28,6 +28,8 @@ dpkg-scanpackages --multiversion --arch amd64 pool /dev/null \
 gzip -9c dists/stable/main/binary-amd64/Packages \
   > dists/stable/main/binary-amd64/Packages.gz
 
+rm -f dists/stable/Release
+
 apt-ftparchive \
   -o APT::FTPArchive::Release::Origin=NovaFlix \
   -o APT::FTPArchive::Release::Label=NovaFlix \

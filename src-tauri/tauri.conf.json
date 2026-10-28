@@ -27,7 +27,12 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["deb", "appimage", "nsis", "msi"],
+    "targets": [
+      "deb",
+      "appimage",
+      "nsis",
+      "msi"
+    ],
     "category": "Utility",
     "shortDescription": "Buscador de escritorio para catálogos multimedia públicos",
     "longDescription": "Buscador de escritorio con caché local: búsqueda instantánea, favoritos, listas de reproducción, lista de pendientes y gestor de descargas con reanudación.",
@@ -37,11 +42,6 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "linux": {
-      "deb": {
-        "depends": ["libwebkit2gtk-4.1-0", "libgtk-3-0"]
-      }
-    }
+    ]
   }
 }

@@ -43,3 +43,9 @@ Fuera de alcance:
 - Descargas con nombre saneado, escritura en `.part` y renombrado atómico.
 - SQLite local con consultas parametrizadas.
 - Dependabot + CodeQL activos en el repositorio.
+
+## Riesgos aceptados
+
+| Dependencia | Aviso | Motivo |
+|---|---|---|
+| `glib 0.18.x` (transitiva vía `gtk 0.18` → `tauri 2.12`) | RUSTSEC de insonoridad en `VariantStrIter` | NovaFlix no usa `VariantStrIter` ni recibe variantes GVariant de entrada; el fallo vive en el binding GTK. No hay versión parcheada en la rama 0.18 y actualizar a 0.20 exige que `tauri` migre de gtk-rs. Se revisará en cada actualización de Tauri. |
