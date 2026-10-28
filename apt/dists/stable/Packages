@@ -1,0 +1,15 @@
+Package: nova-flix
+Version: 0.1.0
+Architecture: amd64
+Maintainer: Novatic
+Installed-Size: 8853
+Depends: libwebkit2gtk-4.1-0, libgtk-3-0, libwebkit2gtk-4.1-0, libgtk-3-0
+Filename: pool/main/n/nova-flix/nova-flix_0.1.0_amd64.deb
+Size: 4147470
+MD5sum: a8bb0f87ded2066c8225aca635afb8b7
+SHA1: cff9d69300aea76d99564c6e380fd13abf804534
+SHA256: 726c50580cfd5c4f0dca182fb400c39e7a5ab53968ee86f6ece2b971eb5114c8
+Priority: optional
+Description: Buscador de escritorio para catálogos multimedia públicos
+ Buscador de escritorio con caché local: búsqueda instantánea, favoritos, listas de reproducción, lista de pendientes y gestor de descargas con reanudación.
+

@@ -1,0 +1,25 @@
+Origin: NovaFlix
+Label: NovaFlix
+Suite: stable
+Codename: stable
+Architectures: amd64 arm64
+Components: main
+Description: Buscador de escritorio para catalogos multimedia publicos
+Date: Wed, 28 Oct 2026 18:02:39 +0000
+Date: Wed, 28 Oct 2026 18:02:39 +0000
+MD5Sum:
+ 7f14c0c1a536b43fe123e2106a36d31e              657 Packages
+ 618f2c527ee25c05f11f8b26dede459f              460 Packages.gz
+ ff719d298bae65e54224babbf3dd5399              255 Release
+SHA1:
+ 013a5ab7770ff9258970de0cf19694f9d7801873              657 Packages
+ 9c5f944533d8a3d2b517814b14dfbc99508554d6              460 Packages.gz
+ 10aea4fbeae2b0c672ece6f35ab2084004299db5              255 Release
+SHA256:
+ 9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 Packages
+ 1a6dbfb0c9afd9422d29962cf6a1ad37376919292aab3013639bb82bfaf5006c              460 Packages.gz
+ e9e8b843b76a03d7d7e60be214d17c72ba15c5d6821abdb447d94549a44ba03e              255 Release
+SHA512:
+ d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 Packages
+ c4de0579ce13b3c75b318757f1d9339dc34059f2a28236a5f0346243412d93ea0456898facd7e0ecc7adde0fc6bfc7718560a7811f4ae64382790d83f46e4ec8              460 Packages.gz
+ 9bd6e2ccdfb080af367e1a619001509e64bd87d6b035dbce2103abc01294dff3cb4124c5148350b94fe36b633b47ca827f29f8993c087f5962ce444a78333fbc              255 Release
