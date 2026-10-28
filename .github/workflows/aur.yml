@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Preparar contenedor
         run: |
-          pacman -Sy --noconfirm --needed git openssh curl pacman-contrib sudo >/dev/null
+          pacman -Syu --noconfirm --needed git openssh curl sudo >/dev/null
 
       - uses: actions/checkout@v4
 
