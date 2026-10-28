@@ -1,0 +1,16 @@
+PackageIdentifier: Novatic.NovaFlix
+PackageVersion: 0.1.0
+InstallerType: nsis
+Scope: user
+InstallModes:
+  - interactive
+  - silent
+  - silentWithProgress
+UpgradeBehavior: install
+ReleaseDate: 2026-10-27
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/novatic-cu/NovaFlix/releases/download/v0.1.0/NovaFlix_0.1.0_x64-setup.exe
+    InstallerSha256: AA7445E74577F40E4C5AA1744A020DDC69DE5FCB610FCAC8AE53341BCC3A8166
+ManifestType: installer
+ManifestVersion: 1.6.0

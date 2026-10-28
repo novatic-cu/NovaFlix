@@ -1,0 +1,127 @@
+name: apt
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag del release (ej. v0.1.0)"
+        required: true
+        default: "v0.1.0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apt-repo
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependencias
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev apt-utils gnupg
+
+      - name: Descargar paquetes del release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.release.tag_name || github.event.inputs.tag }}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          mkdir -p debs
+          gh release download "$TAG" --repo "${{ github.repository }}" --pattern "*.deb" --dir debs
+          ls -la debs
+
+      - name: Construir repositorio APT
+        run: |
+          set -euo pipefail
+          mkdir -p public/apt/pool/main public/apt/dists/stable
+          cd public/apt
+
+          for deb in ../../debs/*.deb; do
+            pkg=$(dpkg-deb -f "$deb" Package)
+            ver=$(dpkg-deb -f "$deb" Version)
+            arch=$(dpkg-deb -f "$deb" Architecture)
+            prefix=$(echo "$pkg" | cut -c1)
+            mkdir -p "pool/main/${prefix}/${pkg}"
+            cp "$deb" "pool/main/${prefix}/${pkg}/${pkg}_${ver}_${arch}.deb"
+          done
+
+          dpkg-scanpackages --multiversion pool /dev/null > dists/stable/Packages
+          gzip -9c dists/stable/Packages > dists/stable/Packages.gz
+
+          cat > dists/stable/Release <<EOF
+          Origin: NovaFlix
+          Label: NovaFlix
+          Suite: stable
+          Codename: stable
+          Architectures: amd64 arm64
+          Components: main
+          Description: Buscador de escritorio para catalogos multimedia publicos
+          Date: $(date -Ru)
+          EOF
+
+          apt-ftparchive release dists/stable >> dists/stable/Release
+          cat dists/stable/Release
+
+      - name: Firmar repositorio
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.APT_GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.APT_GPG_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          cd public/apt
+          if [ -z "${GPG_PRIVATE_KEY:-}" ]; then
+            echo "::warning::APT_GPG_PRIVATE_KEY no configurada: el repositorio se publica SIN firmar."
+            rm -f novaflix.gpg
+            exit 0
+          fi
+
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5; exit}')
+          echo "Clave: $KEY_ID"
+
+          if [ -n "${GPG_PASSPHRASE:-}" ]; then
+            GPG_ARGS=(--batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE")
+          else
+            GPG_ARGS=(--batch --yes)
+          fi
+
+          gpg "${GPG_ARGS[@]}" --local-user "$KEY_ID" --clearsign -o dists/stable/InRelease dists/stable/Release
+          gpg "${GPG_ARGS[@]}" --local-user "$KEY_ID" --armor --detach-sign -o dists/stable/Release.gpg dists/stable/Release
+          gpg --armor --export "$KEY_ID" > novaflix.gpg
+          gpg "${GPG_ARGS[@]}" --verify dists/stable/InRelease
+
+      - name: Página del repositorio
+        run: |
+          cat > public/index.html <<'HTML'
+          <!doctype html>
+          <html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio APT</title>
+          <style>body{font:15px/1.6 system-ui,sans-serif;max-width:720px;margin:64px auto;padding:0 20px;color:#1d1d1f}
+          code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
+          pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+          <body>
+          <h1>NovaFlix · repositorio APT</h1>
+          <p>Índice Debian del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
+          <pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
+          echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" | sudo tee /etc/apt/sources.list.d/novaflix.list
+          sudo apt update &amp;&amp; sudo apt install novaflix</pre>
+          </body></html>
+          HTML
+
+      - name: Publicar en gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: "apt: ${{ env.TAG }}"

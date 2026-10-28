@@ -45,35 +45,67 @@ NovaFlix indexa un catálogo público en una caché local desechable y ofrece un
 
 ## Instalación
 
-### Linux · Debian / Ubuntu
+### Debian / Ubuntu · repositorio APT
 
 ```bash
+curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
+echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/novaflix.list
+sudo apt update && sudo apt install novaflix
+```
+
+Actualizar: `sudo apt update && sudo apt upgrade novaflix`.
+
+<details>
+<summary>Clave de firma del repositorio</summary>
+
+Fingerprint: `F005 E863 F53A 70D6 0447  9A36 9FE8 FBEF 7C21 10F0`
+</details>
+
+### Debian / Ubuntu · paquete suelto
+
+```bash
+curl -LO https://github.com/novatic-cu/NovaFlix/releases/latest/download/NovaFlix_0.1.0_amd64.deb
 sudo apt install ./NovaFlix_0.1.0_amd64.deb
+```
+
+### Arch Linux · AUR
+
+```bash
+paru -S novaflix-bin
+```
+
+Sin AUR (paquete del release):
+
+```bash
+paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst
 ```
 
 ### Linux · AppImage
 
 ```bash
+curl -LO https://github.com/novatic-cu/NovaFlix/releases/latest/download/NovaFlix_0.1.0_amd64.AppImage
 chmod +x NovaFlix_0.1.0_amd64.AppImage
 ./NovaFlix_0.1.0_amd64.AppImage
 ```
 
-### Arch Linux
-
-```bash
-cd packaging/arch
-makepkg -si
-```
-
-O desde el paquete precompilado publicado en cada release (`novaflix-bin`).
-
 ### Windows
 
-Descarga `NovaFlix_0.1.0_x64-setup.exe` (NSIS) o `NovaFlix_0.1.0_x64_en-US.msi` desde [Releases](../../releases). Requiere WebView2 (incluido en Windows 10/11).
+```powershell
+winget install Novatic.NovaFlix
+```
+
+Si el manifiesto aún no está publicado en winget, descarga `NovaFlix_0.1.0_x64-setup.exe` (NSIS) o el `.msi` desde [Releases](../../releases). Requiere WebView2 (incluido en Windows 10/11).
 
 ### macOS
 
-Descarga el `.dmg` de [Releases](../../releases). Las builds no están firmadas ni notarizadas: la primera vez, `Abrir` con clic derecho → *Abrir*.
+```bash
+brew install --cask novatic-cu/tap/novaflix
+```
+
+O descarga el `.dmg` de [Releases](../../releases). Las builds no están firmadas ni notarizadas: la primera vez, clic derecho → *Abrir*.
+
 
 ## Desarrollo
 

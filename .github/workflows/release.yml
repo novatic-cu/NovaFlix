@@ -68,7 +68,7 @@ jobs:
             - Linux: `.deb` y `.AppImage`
             - Windows: `.exe` (NSIS) y `.msi`
             - macOS: `.dmg` universal (Apple Silicon + Intel)
-            - Arch: `novaflix-bin` vía `packaging/arch/PKGBUILD`
+            - Arch: `novaflix-bin` vía `AUR `novaflix-bin` (paru -S novaflix-bin)`
 
             Cambios: ver [CHANGELOG.md](https://github.com/novatic-cu/NovaFlix/blob/main/CHANGELOG.md).
 

@@ -1,11 +1,11 @@
-# Maintainer: Marcos Javier Santana Delgado <marcosjaviersantana300302@gmail.com>
+# Mantenedor: Marcos Javier Santana Delgado <marcosjaviersantana300302@gmail.com>
 pkgname=novaflix-bin
 pkgver=0.1.0
 pkgrel=1
-pkgdesc="Buscador de escritorio para catalagos multimedia publicos"
+pkgdesc="Buscador de escritorio para catalogos multimedia publicos"
 arch=('x86_64')
 url="https://github.com/novatic-cu/NovaFlix"
-license=('PolyForm-Noncommercial-1.0.0')
+license=('custom:PolyForm-Noncommercial-1.0.0')
 depends=('webkit2gtk-4.1' 'gtk3' 'openssl' 'hicolor-icon-theme')
 provides=('novaflix')
 conflicts=('novaflix')
