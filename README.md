@@ -76,7 +76,7 @@ sudo apt install ./NovaFlix_0.1.0_amd64.deb
 paru -S novaflix-bin
 ```
 
-Sin AUR (paquete del release):
+El `PKGBUILD` está listo en [`packaging/aur`](packaging/aur) y el paquete ya se publica en cada release. Si AUR aún no lo tiene, instala el binario directamente:
 
 ```bash
 paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst
