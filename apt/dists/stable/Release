@@ -1,24 +1,20 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Wed, 28 Oct 2026 18:34:07 +0000
+Date: Wed, 28 Oct 2026 18:36:14 +0000
 Description: Buscador de escritorio para catalogos multimedia publicos
 Label: NovaFlix
 Origin: NovaFlix
 Suite: stable
 MD5Sum:
- 9ccba484b73336434034fff27eeb6095              211 Release
  7f14c0c1a536b43fe123e2106a36d31e              657 main/binary-amd64/Packages
- 610bce050503d8ae9304fcc4caf86493              460 main/binary-amd64/Packages.gz
+ 59794221887791fe14db73bf2e652cce              460 main/binary-amd64/Packages.gz
 SHA1:
- beb634c92b088586b550e11b0bc6879bbade0933              211 Release
  013a5ab7770ff9258970de0cf19694f9d7801873              657 main/binary-amd64/Packages
- 502931bc46e5b5ab20dade170e898df8b4961819              460 main/binary-amd64/Packages.gz
+ c75226be5c57ba4827b25ab09c597f9983d1a186              460 main/binary-amd64/Packages.gz
 SHA256:
- d35d10b4132a8c04c29aa477cb2bf6697e6f464434a7d91ac8167fb2ba01a4b1              211 Release
  9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 main/binary-amd64/Packages
- b015bac595398b487ab2e8fbb66efb2513ad2689fc62d0711bbd0fc6e4ad40db              460 main/binary-amd64/Packages.gz
+ 1b0c4eead8933fa892023361cf3e7f324a58c88061506186cb7a6f9e3cefc8d8              460 main/binary-amd64/Packages.gz
 SHA512:
- a803cb684b9026544e064b31dd47ca193ff90d538b1dbbc2399cee1629dc1e8ee4a575d11cbec567b5f04bdb015fda82392fcde3ce586c18384eb80174672955              211 Release
  d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 main/binary-amd64/Packages
- cd4a63b7d8ebba028b3d369f497085aea63922b6f4d2192d705ec5f591a28b490c7643992097b1c8a9a52d60398042b68d575c93bf3e2b42b6ed45eb664310b7              460 main/binary-amd64/Packages.gz
+ 5ef4c4674c2931e4c7b4756ab2f76de807868d2088e5eb20a1daaf1555c2991c9bd660757d9b0c677755bbe0b21a7dbb1237a13f81f5b2e45da4bdfca784f61f              460 main/binary-amd64/Packages.gz
