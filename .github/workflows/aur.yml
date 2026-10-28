@@ -1,0 +1,82 @@
+name: aur
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versión sin prefijo v (ej. 0.1.0)"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aur-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+
+    steps:
+      - name: Preparar contenedor
+        run: |
+          pacman -Sy --noconfirm --needed git openssh curl pacman-contrib sudo >/dev/null
+
+      - uses: actions/checkout@v4
+
+      - name: Clave SSH del AUR
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${AUR_SSH_PRIVATE_KEY:-}" ]; then
+            echo "::error::Falta el secret AUR_SSH_PRIVATE_KEY"
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts 2>/dev/null
+          cat > ~/.ssh/config <<'EOF'
+          Host aur.archlinux.org
+            IdentityFile ~/.ssh/aur
+            User aur
+          EOF
+
+      - name: Actualizar PKGBUILD y publicar
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -euo pipefail
+          VERSION="${INPUT_VERSION:-${GITHUB_REF_NAME#v}}"
+          [ -n "$VERSION" ] || { echo "::error::No se pudo determinar la versión"; exit 1; }
+          echo "Versión: $VERSION"
+
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/v${VERSION}/novaflix-${VERSION}-x86_64.tar.gz"
+          SHA=$(curl -fsSL "$URL" | sha256sum | cut -d' ' -f1)
+
+          sed -i "s/^pkgver=.*/pkgver=${VERSION}/" packaging/aur/PKGBUILD
+          sed -i "s/^pkgrel=.*/pkgrel=1/" packaging/aur/PKGBUILD
+          sed -i "s/^sha256sums=.*/sha256sums=('${SHA}')/" packaging/aur/PKGBUILD
+
+          useradd -m builder || true
+          chown -R builder:builder .
+          sudo -u builder bash -c 'cd packaging/aur && makepkg --printsrcinfo > .SRCINFO'
+
+          git clone "ssh://aur@aur.archlinux.org/novaflix-bin.git" aur-repo
+          cp packaging/aur/PKGBUILD packaging/aur/.SRCINFO aur-repo/
+          cd aur-repo
+          git config user.name "Novatic"
+          git config user.email "marcosjaviersantana300302@gmail.com"
+          git add PKGBUILD .SRCINFO
+          if git diff --cached --quiet; then
+            echo "Sin cambios en el AUR"
+          else
+            git commit -m "upgpkg: novaflix-bin ${VERSION}-1"
+            git push origin master
+            echo "Publicado novaflix-bin ${VERSION}-1"
+          fi
