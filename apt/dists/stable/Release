@@ -1,24 +1,24 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Wed, 28 Oct 2026 18:27:38 +0000
+Date: Wed, 28 Oct 2026 18:34:07 +0000
 Description: Buscador de escritorio para catalogos multimedia publicos
 Label: NovaFlix
 Origin: NovaFlix
 Suite: stable
 MD5Sum:
- dccf3dc2d1ebafcec77b3c741788b3c3              211 Release
+ 9ccba484b73336434034fff27eeb6095              211 Release
  7f14c0c1a536b43fe123e2106a36d31e              657 main/binary-amd64/Packages
- 38d541727b90686a8429cca3d356c853              460 main/binary-amd64/Packages.gz
+ 610bce050503d8ae9304fcc4caf86493              460 main/binary-amd64/Packages.gz
 SHA1:
- 9618c95a4e232b974b36b68aa782db941b326c67              211 Release
+ beb634c92b088586b550e11b0bc6879bbade0933              211 Release
  013a5ab7770ff9258970de0cf19694f9d7801873              657 main/binary-amd64/Packages
- b7500c1e2a159d7e6afbea49e24fc72d309b6d70              460 main/binary-amd64/Packages.gz
+ 502931bc46e5b5ab20dade170e898df8b4961819              460 main/binary-amd64/Packages.gz
 SHA256:
- 37036d58be60253e0b2c1b2ee20e3312fe4913348ef197c74c331ace17d3690b              211 Release
+ d35d10b4132a8c04c29aa477cb2bf6697e6f464434a7d91ac8167fb2ba01a4b1              211 Release
  9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 main/binary-amd64/Packages
- 090c39edc4f17508859243b1ef58709def4be545873a2bdb5c573fbd191f44bc              460 main/binary-amd64/Packages.gz
+ b015bac595398b487ab2e8fbb66efb2513ad2689fc62d0711bbd0fc6e4ad40db              460 main/binary-amd64/Packages.gz
 SHA512:
- 2b1a10995e74cd6d7e9ede31cb35dc83cef43b0ce9ffce219749563e9a4d1dfc6f3cd0a3bda3fb2a9b70a0fe1bd96f513ddd8f24e32975ff0a67ba9455772e42              211 Release
+ a803cb684b9026544e064b31dd47ca193ff90d538b1dbbc2399cee1629dc1e8ee4a575d11cbec567b5f04bdb015fda82392fcde3ce586c18384eb80174672955              211 Release
  d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 main/binary-amd64/Packages
- d93a1ba2f81e863a0df1da4655855892b98e612119800af4cd52617df48be7fa3c73f79ad9f3e06634ce84281e55866643907bedf7b7c1f59086184cdce32a8c              460 main/binary-amd64/Packages.gz
+ cd4a63b7d8ebba028b3d369f497085aea63922b6f4d2192d705ec5f591a28b490c7643992097b1c8a9a52d60398042b68d575c93bf3e2b42b6ed45eb664310b7              460 main/binary-amd64/Packages.gz
