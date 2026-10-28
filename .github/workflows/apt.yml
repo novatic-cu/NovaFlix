@@ -112,7 +112,7 @@ jobs:
           <p>Índice Debian del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
           <pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
           echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" | sudo tee /etc/apt/sources.list.d/novaflix.list
-          sudo apt update &amp;&amp; sudo apt install novaflix</pre>
+          sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
           </body></html>
           HTML
 

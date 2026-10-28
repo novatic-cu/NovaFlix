@@ -52,10 +52,10 @@ curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg \
   | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
 echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" \
   | sudo tee /etc/apt/sources.list.d/novaflix.list
-sudo apt update && sudo apt install novaflix
+sudo apt update && sudo apt install nova-flix
 ```
 
-Actualizar: `sudo apt update && sudo apt upgrade novaflix`.
+Actualizar: `sudo apt update && sudo apt upgrade nova-flix`. El paquete APT se llama `nova-flix`; el binario instalado es `novaflix`.
 
 <details>
 <summary>Clave de firma del repositorio</summary>
