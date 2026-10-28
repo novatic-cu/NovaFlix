@@ -60,7 +60,6 @@ jobs:
           gzip -9c "dists/stable/main/binary-${ARCH}/Packages" \
             > "dists/stable/main/binary-${ARCH}/Packages.gz"
 
-          rm -f dists/stable/Release
           apt-ftparchive \
             -o APT::FTPArchive::Release::Origin=NovaFlix \
             -o APT::FTPArchive::Release::Label=NovaFlix \
@@ -69,7 +68,8 @@ jobs:
             -o APT::FTPArchive::Release::Architectures="$ARCH" \
             -o APT::FTPArchive::Release::Components=main \
             -o APT::FTPArchive::Release::Description="Buscador de escritorio para catalogos multimedia publicos" \
-            release dists/stable > dists/stable/Release
+            release dists/stable > /tmp/Release
+          mv /tmp/Release dists/stable/Release
 
           cat dists/stable/Release
           head -20 "dists/stable/main/binary-${ARCH}/Packages"
