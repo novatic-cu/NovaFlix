@@ -314,8 +314,8 @@ export function SettingsScreen() {
           </div>
 
           <p className="hint" style={{ marginTop: 24, maxWidth: 620 }}>
-            NovaFlix es un cliente de escritorio: no aloja contenido. Solo indexa el listado
-            público de {info?.base_url ?? "visuales.uclv.cu"} y descarga bajo tu decisión.
+            NovaFlix es un cliente de escritorio: no aloja contenido. Indexa un catálogo público
+            y descarga únicamente lo que tú decidas.
           </p>
         </div>
       </div>

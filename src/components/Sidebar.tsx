@@ -30,7 +30,7 @@ export function Sidebar() {
         <div className="brand-mark">N</div>
         <div>
           <div className="brand-name">NovaFlix</div>
-          <div className="brand-sub">Visuales UCLV</div>
+          <div className="brand-sub">Buscador multimedia</div>
         </div>
       </div>
 

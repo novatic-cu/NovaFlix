@@ -28,5 +28,19 @@
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "vite": "^7.1.7"
-  }
+  },
+  "description": "Buscador de escritorio para catálogos multimedia públicos",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "author": {
+    "name": "Marcos Javier Santana Delgado",
+    "url": "https://github.com/Corxo91"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novatic-cu/NovaFlix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/novatic-cu/NovaFlix/issues"
+  },
+  "homepage": "https://github.com/novatic-cu/NovaFlix"
 }

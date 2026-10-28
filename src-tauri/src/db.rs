@@ -138,8 +138,10 @@ pub fn open_app(path: &Path) -> Result<Connection, String> {
 }
 
 pub fn get_meta(conn: &Connection, key: &str) -> Option<String> {
-    conn.query_row("SELECT value FROM meta WHERE key = ?1", [key], |row| row.get(0))
-        .ok()
+    conn.query_row("SELECT value FROM meta WHERE key = ?1", [key], |row| {
+        row.get(0)
+    })
+    .ok()
 }
 
 pub fn set_meta(conn: &Connection, key: &str, value: &str) {
@@ -151,8 +153,10 @@ pub fn set_meta(conn: &Connection, key: &str, value: &str) {
 }
 
 pub fn get_setting(conn: &Connection, key: &str) -> Option<String> {
-    conn.query_row("SELECT value FROM settings WHERE key = ?1", [key], |row| row.get(0))
-        .ok()
+    conn.query_row("SELECT value FROM settings WHERE key = ?1", [key], |row| {
+        row.get(0)
+    })
+    .ok()
 }
 
 pub fn set_setting(conn: &Connection, key: &str, value: &str) -> Result<(), String> {
@@ -214,7 +218,8 @@ pub fn upsert_dir_row(
 
 /// Reconstruye el indice FTS de directorios en una sola pasada.
 pub fn rebuild_dir_fts(tx: &rusqlite::Transaction<'_>) -> Result<(), String> {
-    tx.execute("DELETE FROM dir_fts", []).map_err(|e| e.to_string())?;
+    tx.execute("DELETE FROM dir_fts", [])
+        .map_err(|e| e.to_string())?;
     tx.execute(
         "INSERT INTO dir_fts(rowid, name, norm, path) SELECT rowid, name, norm, path FROM dir_index",
         [],
@@ -223,6 +228,7 @@ pub fn rebuild_dir_fts(tx: &rusqlite::Transaction<'_>) -> Result<(), String> {
     .map_err(|e| e.to_string())
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn upsert_file(
     tx: &rusqlite::Transaction<'_>,
     path: &str,
@@ -245,7 +251,18 @@ pub fn upsert_file(
              size = excluded.size,
              mtime = excluded.mtime,
              seen_at = excluded.seen_at",
-        rusqlite::params![path, name, norm, parent, section, year, ext, size, mtime, now_iso()],
+        rusqlite::params![
+            path,
+            name,
+            norm,
+            parent,
+            section,
+            year,
+            ext,
+            size,
+            mtime,
+            now_iso()
+        ],
     )
     .map_err(|e| e.to_string())?;
 

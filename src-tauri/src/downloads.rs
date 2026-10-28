@@ -13,7 +13,7 @@ use serde::Serialize;
 use tauri::{AppHandle, Emitter};
 use tokio::io::AsyncWriteExt;
 
-use crate::{db, library, state::AppState, visuales};
+use crate::{catalog, db, library, state::AppState};
 
 #[derive(Debug, Serialize)]
 pub struct DownloadRow {
@@ -45,14 +45,7 @@ fn sanitize_file_name(name: &str) -> String {
     }
 }
 
-fn update_row(
-    state: &AppState,
-    id: i64,
-    done: i64,
-    total: i64,
-    status: &str,
-    error: Option<&str>,
-) {
+fn update_row(state: &AppState, id: i64, done: i64, total: i64, status: &str, error: Option<&str>) {
     if let Ok(conn) = state.app.lock() {
         let finished = if matches!(status, "done" | "error" | "cancelled") {
             Some(db::now_iso())
@@ -91,7 +84,8 @@ pub fn list(state: &AppState) -> Result<Vec<DownloadRow>, String> {
             })
         })
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
 pub fn clear_finished(state: &AppState) -> Result<(), String> {
@@ -126,7 +120,7 @@ pub fn enqueue(
 
     let mut ids = Vec::new();
     for path in paths {
-        let decoded = visuales::decode_name(&db::name_of(&path));
+        let decoded = catalog::decode_name(&db::name_of(&path));
         let file_name = sanitize_file_name(&decoded);
         let dest = target_dir.join(file_name);
 
@@ -213,12 +207,15 @@ async fn run(app: AppHandle, state: Arc<AppState>, id: i64, remote_path: String,
         return;
     }
 
-    let url = visuales::absolute_url(&remote_path);
+    let url = catalog::absolute_url(&remote_path);
     let part = PathBuf::from(format!("{}.part", dest.to_string_lossy()));
 
     update_row(&state, id, 0, 0, "active", None);
 
-    let mut start = tokio::fs::metadata(&part).await.map(|meta| meta.len()).unwrap_or(0);
+    let mut start = tokio::fs::metadata(&part)
+        .await
+        .map(|meta| meta.len())
+        .unwrap_or(0);
     if start > 0 {
         if let Ok(existing) = tokio::fs::metadata(&dest).await {
             if existing.len() == start {
@@ -274,7 +271,14 @@ async fn run(app: AppHandle, state: Arc<AppState>, id: i64, remote_path: String,
     {
         Ok(file) => file,
         Err(err) => {
-            update_row(&state, id, start as i64, total, "error", Some(&err.to_string()));
+            update_row(
+                &state,
+                id,
+                start as i64,
+                total,
+                "error",
+                Some(&err.to_string()),
+            );
             return;
         }
     };
@@ -297,13 +301,27 @@ async fn run(app: AppHandle, state: Arc<AppState>, id: i64, remote_path: String,
         match chunk {
             Ok(bytes) => {
                 if let Err(err) = tokio::io::AsyncWriteExt::write_all(&mut file, &bytes).await {
-                    update_row(&state, id, done as i64, total, "error", Some(&err.to_string()));
+                    update_row(
+                        &state,
+                        id,
+                        done as i64,
+                        total,
+                        "error",
+                        Some(&err.to_string()),
+                    );
                     return;
                 }
                 done += bytes.len() as u64;
             }
             Err(err) => {
-                update_row(&state, id, done as i64, total, "error", Some(&err.to_string()));
+                update_row(
+                    &state,
+                    id,
+                    done as i64,
+                    total,
+                    "error",
+                    Some(&err.to_string()),
+                );
                 let _ = app.emit(
                     "download://progress",
                     serde_json::json!({ "id": id, "state": "error", "done": done, "total": total, "error": err.to_string() }),
@@ -326,7 +344,14 @@ async fn run(app: AppHandle, state: Arc<AppState>, id: i64, remote_path: String,
     drop(file);
 
     if let Err(err) = tokio::fs::rename(&part, &dest).await {
-        update_row(&state, id, done as i64, total, "error", Some(&err.to_string()));
+        update_row(
+            &state,
+            id,
+            done as i64,
+            total,
+            "error",
+            Some(&err.to_string()),
+        );
         return;
     }
 

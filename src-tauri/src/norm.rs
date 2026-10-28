@@ -101,12 +101,18 @@ mod tests {
             normalize("The.Good.Dinosaur.2015.720p.BluRay.x264-[YTS.AG]"),
             "the good dinosaur 2015 ag"
         );
-        assert_eq!(normalize("Dinosaur.2000.720p.BrRip.x264.YIFY.es.srt"), "dinosaur 2000");
+        assert_eq!(
+            normalize("Dinosaur.2000.720p.BrRip.x264.YIFY.es.srt"),
+            "dinosaur 2000"
+        );
     }
 
     #[test]
     fn fts_prefixes() {
-        assert_eq!(fts_query("wicked 2025"), Some("\"wicked\"* AND \"2025\"*".to_string()));
+        assert_eq!(
+            fts_query("wicked 2025"),
+            Some("\"wicked\"* AND \"2025\"*".to_string())
+        );
         assert_eq!(fts_query("   "), None);
     }
 

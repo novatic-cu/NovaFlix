@@ -1,10 +1,7 @@
 use std::{
     collections::HashMap,
     path::PathBuf,
-    sync::{
-        atomic::AtomicBool,
-        Arc, Mutex,
-    },
+    sync::{atomic::AtomicBool, Arc, Mutex},
 };
 
 use rusqlite::Connection;

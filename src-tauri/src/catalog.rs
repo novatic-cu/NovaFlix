@@ -92,7 +92,10 @@ pub fn parse_listado(html: &str) -> Vec<String> {
     let mut paths = Vec::new();
     let mut seen = std::collections::HashSet::new();
     for captures in listado_re().captures_iter(html) {
-        let path = format!("/{}", captures.get(1).map(|m| m.as_str()).unwrap_or_default());
+        let path = format!(
+            "/{}",
+            captures.get(1).map(|m| m.as_str()).unwrap_or_default()
+        );
         if !path.ends_with('/') {
             continue;
         }
@@ -122,10 +125,7 @@ pub async fn fetch_text(http: &reqwest::Client, url: &str) -> Result<String, Str
 }
 
 /// Lista un directorio remoto en vivo.
-pub async fn fetch_listing(
-    http: &reqwest::Client,
-    path: &str,
-) -> Result<Vec<RawEntry>, String> {
+pub async fn fetch_listing(http: &reqwest::Client, path: &str) -> Result<Vec<RawEntry>, String> {
     let mut target = path.to_string();
     if !target.ends_with('/') {
         target.push('/');
@@ -159,6 +159,9 @@ mod tests {
     #[test]
     fn listado_paths() {
         let html = r#"<a href="http://visuales.uclv.cu//Peliculas/2024/Wicked%20%282024%29/">Wicked (2024)</a>"#;
-        assert_eq!(parse_listado(html), vec!["/Peliculas/2024/Wicked%20%282024%29/"]);
+        assert_eq!(
+            parse_listado(html),
+            vec!["/Peliculas/2024/Wicked%20%282024%29/"]
+        );
     }
 }

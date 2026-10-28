@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Seguridad
+    url: https://github.com/novatic-cu/NovaFlix/security/advisories/new
+    about: Reporta vulnerabilidades en privado, no en un issue público.
+  - name: Licencia comercial
+    url: https://github.com/novatic-cu/NovaFlix/blob/main/COMMERCIAL.md
+    about: Uso comercial, reventa o servicio alojado.

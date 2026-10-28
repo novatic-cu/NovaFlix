@@ -1,0 +1,32 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NovaFlix">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="40" x2="920" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1220"/>
+      <stop offset="0.52" stop-color="#122A4C"/>
+      <stop offset="1" stop-color="#0A84FF"/>
+    </linearGradient>
+    <linearGradient id="glyph" x1="512" y1="260" x2="512" y2="760" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D5E6FF"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="740" y1="200" x2="860" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B9DCFF"/>
+      <stop offset="1" stop-color="#5AB0FF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(512 560) rotate(90) scale(520)">
+      <stop offset="0" stop-color="#2E7DFF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#2E7DFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="232" fill="url(#glow)"/>
+
+  <g fill="url(#glyph)">
+    <rect x="292" y="276" width="96" height="472" rx="12"/>
+    <rect x="636" y="276" width="96" height="472" rx="12"/>
+    <path d="M388 276h96l248 472h-96z"/>
+  </g>
+
+  <path d="M790 196l14 38 38 14-38 14-14 38-14-38-38-14 38-14z" fill="url(#spark)"/>
+</svg>

@@ -8,9 +8,7 @@ use rusqlite::params;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
 
-use crate::{
-    db, norm, state::AppState, visuales,
-};
+use crate::{catalog, db, norm, state::AppState};
 
 #[derive(Debug, Serialize)]
 pub struct IndexStats {
@@ -102,7 +100,9 @@ pub fn stats(state: &AppState) -> Result<IndexStats, String> {
         .query_row("SELECT COUNT(*) FROM file_index", [], |row| row.get(0))
         .unwrap_or(0);
     let cache_bytes: i64 = conn
-        .query_row("SELECT COALESCE(SUM(bytes), 0) FROM dir_cache", [], |row| row.get(0))
+        .query_row("SELECT COALESCE(SUM(bytes), 0) FROM dir_cache", [], |row| {
+            row.get(0)
+        })
         .unwrap_or(0);
     let cached_dirs: i64 = conn
         .query_row("SELECT COUNT(*) FROM dir_cache", [], |row| row.get(0))
@@ -130,12 +130,19 @@ pub fn stats(state: &AppState) -> Result<IndexStats, String> {
 }
 
 /// Carga el arbol publicado por el sitio (`listado.html`) en el indice de directorios.
-pub async fn bootstrap(app: &AppHandle, state: &Arc<AppState>, force: bool) -> Result<IndexStats, String> {
+pub async fn bootstrap(
+    app: &AppHandle,
+    state: &Arc<AppState>,
+    force: bool,
+) -> Result<IndexStats, String> {
     let ttl = ttl_hours(state, "bootstrap_ttl_hours", 24);
 
     if !force {
         let fresh = {
-            let conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+            let conn = state
+                .cache
+                .lock()
+                .map_err(|_| "cache bloqueada".to_string())?;
             let dirs: i64 = conn
                 .query_row("SELECT COUNT(*) FROM dir_index", [], |row| row.get(0))
                 .unwrap_or(0);
@@ -152,16 +159,22 @@ pub async fn bootstrap(app: &AppHandle, state: &Arc<AppState>, force: bool) -> R
         }
     }
 
-    let _ = app.emit("index://progress", serde_json::json!({ "phase": "bootstrap", "state": "start" }));
-    let html = visuales::fetch_text(&state.http, &format!("{}/listado.html", visuales::BASE)).await?;
-    let paths = visuales::parse_listado(&html);
+    let _ = app.emit(
+        "index://progress",
+        serde_json::json!({ "phase": "bootstrap", "state": "start" }),
+    );
+    let html = catalog::fetch_text(&state.http, &format!("{}/listado.html", catalog::BASE)).await?;
+    let paths = catalog::parse_listado(&html);
     let total = paths.len();
 
     {
-        let mut conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+        let mut conn = state
+            .cache
+            .lock()
+            .map_err(|_| "cache bloqueada".to_string())?;
         let tx = conn.transaction().map_err(|e| e.to_string())?;
         for path in &paths {
-            let name = visuales::decode_name(&db::name_of(path));
+            let name = catalog::decode_name(&db::name_of(path));
             let parent = db::parent_of(path);
             let section = db::section_of(path);
             let year = norm::extract_year(&name);
@@ -190,13 +203,24 @@ pub fn search(
     let started = Instant::now();
     let normalized = norm::normalize(query);
     if normalized.is_empty() {
-        return Ok(SearchPage { hits: Vec::new(), total: 0, took_ms: 0 });
+        return Ok(SearchPage {
+            hits: Vec::new(),
+            total: 0,
+            took_ms: 0,
+        });
     }
     let Some(fts) = norm::fts_query(query) else {
-        return Ok(SearchPage { hits: Vec::new(), total: 0, took_ms: 0 });
+        return Ok(SearchPage {
+            hits: Vec::new(),
+            total: 0,
+            took_ms: 0,
+        });
     };
 
-    let conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+    let conn = state
+        .cache
+        .lock()
+        .map_err(|_| "cache bloqueada".to_string())?;
     let fetch_limit = (offset + limit).clamp(50, 400);
     let mut hits: Vec<Hit> = Vec::new();
     let mut total = 0_i64;
@@ -271,20 +295,23 @@ pub fn search(
             .map_err(|e| e.to_string())?;
 
         let rows = statement
-            .query_map(params![fts, filter.section, filter.year, fetch_limit], |row| {
-                Ok(Hit {
-                    kind: "dir".to_string(),
-                    path: row.get(0)?,
-                    name: row.get(1)?,
-                    parent: row.get(2)?,
-                    section: row.get(3)?,
-                    year: row.get(4)?,
-                    ext: None,
-                    size: None,
-                    mtime: None,
-                    score: 0,
-                })
-            })
+            .query_map(
+                params![fts, filter.section, filter.year, fetch_limit],
+                |row| {
+                    Ok(Hit {
+                        kind: "dir".to_string(),
+                        path: row.get(0)?,
+                        name: row.get(1)?,
+                        parent: row.get(2)?,
+                        section: row.get(3)?,
+                        year: row.get(4)?,
+                        ext: None,
+                        size: None,
+                        mtime: None,
+                        score: 0,
+                    })
+                },
+            )
             .map_err(|e| e.to_string())?;
 
         for (index, row) in rows.enumerate() {
@@ -332,7 +359,9 @@ pub fn search(
 
 fn prune_cache(conn: &rusqlite::Connection, max_bytes: i64) -> Result<(), String> {
     let total: i64 = conn
-        .query_row("SELECT COALESCE(SUM(bytes), 0) FROM dir_cache", [], |row| row.get(0))
+        .query_row("SELECT COALESCE(SUM(bytes), 0) FROM dir_cache", [], |row| {
+            row.get(0)
+        })
         .unwrap_or(0);
     if total <= max_bytes {
         return Ok(());
@@ -351,11 +380,7 @@ fn prune_cache(conn: &rusqlite::Connection, max_bytes: i64) -> Result<(), String
     Ok(())
 }
 
-pub async fn browse(
-    state: &Arc<AppState>,
-    path: &str,
-    force: bool,
-) -> Result<Listing, String> {
+pub async fn browse(state: &Arc<AppState>, path: &str, force: bool) -> Result<Listing, String> {
     let ttl = ttl_hours(state, "cache_ttl_hours", 12);
     let mut target = path.to_string();
     if target.is_empty() {
@@ -370,7 +395,10 @@ pub async fn browse(
 
     if !force {
         let cached = {
-            let conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+            let conn = state
+                .cache
+                .lock()
+                .map_err(|_| "cache bloqueada".to_string())?;
             conn.query_row(
                 "SELECT payload, fetched_at FROM dir_cache WHERE path = ?1",
                 [&target],
@@ -396,10 +424,10 @@ pub async fn browse(
         }
     }
 
-    let raw = visuales::fetch_listing(&state.http, &target).await?;
+    let raw = catalog::fetch_listing(&state.http, &target).await?;
     let now = db::now_iso();
     let section = db::section_of(&target);
-    let year = norm::extract_year(&visuales::decode_name(&target));
+    let year = norm::extract_year(&catalog::decode_name(&target));
 
     let mut entries: Vec<Entry> = Vec::with_capacity(raw.len());
     for item in &raw {
@@ -426,7 +454,10 @@ pub async fn browse(
     }
 
     {
-        let mut conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+        let mut conn = state
+            .cache
+            .lock()
+            .map_err(|_| "cache bloqueada".to_string())?;
         let tx = conn.transaction().map_err(|e| e.to_string())?;
 
         for entry in &entries {
@@ -480,13 +511,21 @@ pub async fn browse(
 }
 
 pub fn cache_clear(state: &Arc<AppState>, keep_index: bool) -> Result<IndexStats, String> {
-    let conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
-    conn.execute("DELETE FROM dir_cache", []).map_err(|e| e.to_string())?;
+    let conn = state
+        .cache
+        .lock()
+        .map_err(|_| "cache bloqueada".to_string())?;
+    conn.execute("DELETE FROM dir_cache", [])
+        .map_err(|e| e.to_string())?;
     if !keep_index {
-        conn.execute("DELETE FROM dir_fts", []).map_err(|e| e.to_string())?;
-        conn.execute("DELETE FROM file_fts", []).map_err(|e| e.to_string())?;
-        conn.execute("DELETE FROM dir_index", []).map_err(|e| e.to_string())?;
-        conn.execute("DELETE FROM file_index", []).map_err(|e| e.to_string())?;
+        conn.execute("DELETE FROM dir_fts", [])
+            .map_err(|e| e.to_string())?;
+        conn.execute("DELETE FROM file_fts", [])
+            .map_err(|e| e.to_string())?;
+        conn.execute("DELETE FROM dir_index", [])
+            .map_err(|e| e.to_string())?;
+        conn.execute("DELETE FROM file_index", [])
+            .map_err(|e| e.to_string())?;
         let _ = conn.execute("DELETE FROM meta WHERE key LIKE 'last_%'", []);
     }
     drop(conn);
@@ -524,19 +563,22 @@ pub async fn crawl(
 
         let futures = batch
             .iter()
-            .map(|path| visuales::fetch_listing(&state.http, path));
+            .map(|path| catalog::fetch_listing(&state.http, path));
         let results = futures::future::join_all(futures).await;
 
         {
-            let mut conn = state.cache.lock().map_err(|_| "cache bloqueada".to_string())?;
+            let mut conn = state
+                .cache
+                .lock()
+                .map_err(|_| "cache bloqueada".to_string())?;
             let tx = conn.transaction().map_err(|e| e.to_string())?;
             for (path, result) in batch.iter().zip(results) {
                 match result {
                     Ok(entries) => {
                         let section = db::section_of(path);
-                        let year = norm::extract_year(&visuales::decode_name(path));
+                        let year = norm::extract_year(&catalog::decode_name(path));
                         for entry in entries {
-                            let child = format!("{}{}", path.trim_end_matches('/'), format!("/{}", entry.href));
+                            let child = format!("{}/{}", path.trim_end_matches('/'), entry.href);
                             if entry.is_dir {
                                 db::upsert_dir(
                                     &tx,

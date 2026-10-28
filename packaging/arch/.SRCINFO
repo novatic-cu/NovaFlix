@@ -1,0 +1,18 @@
+pkgbase = novaflix-bin
+	pkgdesc = Buscador de escritorio para catalagos multimedia publicos
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/novatic-cu/NovaFlix
+	arch = x86_64
+	license = PolyForm-Noncommercial-1.0.0
+	depends = webkit2gtk-4.1
+	depends = gtk3
+	depends = openssl
+	depends = hicolor-icon-theme
+	provides = novaflix
+	conflicts = novaflix
+	options = !strip
+	source = novaflix-0.1.0.tar.gz::https://github.com/novatic-cu/NovaFlix/releases/download/v0.1.0/novaflix-0.1.0-x86_64.tar.gz
+	sha256sums = a184559698b6db828cf5308799c86cbbf752147a610a9e75d35bdd5891422a23
+
+pkgname = novaflix-bin

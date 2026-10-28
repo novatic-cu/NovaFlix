@@ -1,3 +1,4 @@
+mod catalog;
 mod commands;
 mod db;
 mod downloads;
@@ -5,7 +6,6 @@ mod index;
 mod library;
 mod norm;
 mod state;
-mod visuales;
 
 use tauri::Manager;
 

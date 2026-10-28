@@ -4,7 +4,7 @@ use rusqlite::{params, OptionalExtension};
 use serde::Serialize;
 use tauri::{AppHandle, Emitter};
 
-use crate::{db, state::AppState, visuales};
+use crate::{catalog, db, state::AppState};
 
 #[derive(Debug, Serialize)]
 pub struct Favorite {
@@ -88,7 +88,8 @@ pub fn favorites(state: &AppState) -> Result<Vec<Favorite>, String> {
             })
         })
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
 pub fn favorite_add(
@@ -99,8 +100,12 @@ pub fn favorite_add(
     note: Option<String>,
     size: Option<i64>,
 ) -> Result<(), String> {
-    let decoded = visuales::decode_name(&db::name_of(path));
-    let name = if label.trim().is_empty() { decoded } else { label.to_string() };
+    let decoded = catalog::decode_name(&db::name_of(path));
+    let name = if label.trim().is_empty() {
+        decoded
+    } else {
+        label.to_string()
+    };
     remember_item(state, path, &name, target_kind, None, size)?;
 
     let conn = state.app.lock().map_err(|_| "app bloqueada".to_string())?;
@@ -148,7 +153,8 @@ pub fn lists(state: &AppState) -> Result<Vec<ListSummary>, String> {
             })
         })
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
 pub fn list_create(state: &AppState, name: &str, kind: &str) -> Result<i64, String> {
@@ -198,11 +204,17 @@ pub fn list_items(state: &AppState, list_id: i64) -> Result<Vec<ListItem>, Strin
             })
         })
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
-pub fn list_add(state: &AppState, list_id: i64, path: &str, name: Option<String>) -> Result<(), String> {
-    let decoded = visuales::decode_name(&db::name_of(path));
+pub fn list_add(
+    state: &AppState,
+    list_id: i64,
+    path: &str,
+    name: Option<String>,
+) -> Result<(), String> {
+    let decoded = catalog::decode_name(&db::name_of(path));
     let label = name.unwrap_or(decoded);
     let conn = state.app.lock().map_err(|_| "app bloqueada".to_string())?;
     let next: i64 = conn
@@ -219,9 +231,12 @@ pub fn list_add(state: &AppState, list_id: i64, path: &str, name: Option<String>
         params![list_id, path, label, next, db::now_iso()],
     )
     .map_err(|e| e.to_string())?;
-    conn.execute("UPDATE lists SET updated_at = ?2 WHERE id = ?1", params![list_id, db::now_iso()])
-        .map(|_| ())
-        .map_err(|e| e.to_string())
+    conn.execute(
+        "UPDATE lists SET updated_at = ?2 WHERE id = ?1",
+        params![list_id, db::now_iso()],
+    )
+    .map(|_| ())
+    .map_err(|e| e.to_string())
 }
 
 pub fn list_remove(state: &AppState, list_id: i64, path: &str) -> Result<(), String> {
@@ -231,9 +246,12 @@ pub fn list_remove(state: &AppState, list_id: i64, path: &str) -> Result<(), Str
         params![list_id, path],
     )
     .map_err(|e| e.to_string())?;
-    conn.execute("UPDATE lists SET updated_at = ?2 WHERE id = ?1", params![list_id, db::now_iso()])
-        .map(|_| ())
-        .map_err(|e| e.to_string())
+    conn.execute(
+        "UPDATE lists SET updated_at = ?2 WHERE id = ?1",
+        params![list_id, db::now_iso()],
+    )
+    .map(|_| ())
+    .map_err(|e| e.to_string())
 }
 
 pub fn list_reorder(state: &AppState, list_id: i64, paths: Vec<String>) -> Result<(), String> {
@@ -246,12 +264,20 @@ pub fn list_reorder(state: &AppState, list_id: i64, paths: Vec<String>) -> Resul
         )
         .map_err(|e| e.to_string())?;
     }
-    tx.execute("UPDATE lists SET updated_at = ?2 WHERE id = ?1", params![list_id, db::now_iso()])
-        .map_err(|e| e.to_string())?;
+    tx.execute(
+        "UPDATE lists SET updated_at = ?2 WHERE id = ?1",
+        params![list_id, db::now_iso()],
+    )
+    .map_err(|e| e.to_string())?;
     tx.commit().map_err(|e| e.to_string())
 }
 
-pub fn list_mark_watched(state: &AppState, list_id: i64, path: &str, watched: bool) -> Result<(), String> {
+pub fn list_mark_watched(
+    state: &AppState,
+    list_id: i64,
+    path: &str,
+    watched: bool,
+) -> Result<(), String> {
     let conn = state.app.lock().map_err(|_| "app bloqueada".to_string())?;
     let value: Option<String> = if watched { Some(db::now_iso()) } else { None };
     conn.execute(
@@ -280,7 +306,8 @@ pub fn counters(state: &AppState) -> Result<Vec<Counter>, String> {
             })
         })
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
 pub fn counter_for(state: &AppState, path: &str) -> Result<Counter, String> {
@@ -335,7 +362,9 @@ pub fn settings(state: &AppState) -> Result<serde_json::Value, String> {
         .prepare("SELECT key, value FROM settings")
         .map_err(|e| e.to_string())?;
     let rows = statement
-        .query_map([], |row| Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?)))
+        .query_map([], |row| {
+            Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+        })
         .map_err(|e| e.to_string())?;
 
     let mut map = serde_json::Map::new();
@@ -359,7 +388,8 @@ pub fn recent_searches(state: &AppState) -> Result<Vec<String>, String> {
     let rows = statement
         .query_map([], |row| row.get::<_, String>(0))
         .map_err(|e| e.to_string())?;
-    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+    rows.collect::<Result<Vec<_>, _>>()
+        .map_err(|e| e.to_string())
 }
 
 /// Genera un archivo M3U con URLs absolutas para abrir en VLC/mpv.
@@ -367,7 +397,9 @@ pub fn export_m3u(app: &AppHandle, state: &AppState, list_id: i64) -> Result<Pat
     let (name, items) = {
         let conn = state.app.lock().map_err(|_| "app bloqueada".to_string())?;
         let name: String = conn
-            .query_row("SELECT name FROM lists WHERE id = ?1", [list_id], |row| row.get(0))
+            .query_row("SELECT name FROM lists WHERE id = ?1", [list_id], |row| {
+                row.get(0)
+            })
             .map_err(|e| e.to_string())?;
         let mut statement = conn
             .prepare("SELECT name, path FROM list_items WHERE list_id = ?1 ORDER BY position")
@@ -387,7 +419,7 @@ pub fn export_m3u(app: &AppHandle, state: &AppState, list_id: i64) -> Result<Pat
         body.push_str(&format!(
             "#EXTINF:-1,{}\n{}\n",
             item_name,
-            visuales::absolute_url(&path)
+            catalog::absolute_url(&path)
         ));
     }
 
@@ -406,7 +438,7 @@ pub fn export_m3u(app: &AppHandle, state: &AppState, list_id: i64) -> Result<Pat
 
 /// Lanza el reproductor externo configurado (VLC/mpv/celluloid) con la URL remota.
 pub fn play(state: &AppState, path: &str) -> Result<(), String> {
-    let url = visuales::absolute_url(path);
+    let url = catalog::absolute_url(path);
     let configured = state
         .app
         .lock()

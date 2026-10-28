@@ -1,0 +1,24 @@
+# Maintainer: Marcos Javier Santana Delgado <marcosjaviersantana300302@gmail.com>
+pkgname=novaflix-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Buscador de escritorio para catalagos multimedia publicos"
+arch=('x86_64')
+url="https://github.com/novatic-cu/NovaFlix"
+license=('PolyForm-Noncommercial-1.0.0')
+depends=('webkit2gtk-4.1' 'gtk3' 'openssl' 'hicolor-icon-theme')
+provides=('novaflix')
+conflicts=('novaflix')
+options=('!strip')
+source=("novaflix-${pkgver}.tar.gz::${url}/releases/download/v${pkgver}/novaflix-${pkgver}-x86_64.tar.gz")
+sha256sums=('a184559698b6db828cf5308799c86cbbf752147a610a9e75d35bdd5891422a23')
+
+package() {
+  install -Dm755 "${srcdir}/novaflix" "${pkgdir}/usr/bin/novaflix"
+  install -Dm644 "${srcdir}/novaflix.desktop" "${pkgdir}/usr/share/applications/novaflix.desktop"
+
+  for size in 32 128 256 512; do
+    install -Dm644 "${srcdir}/icons/novaflix-${size}.png" \
+      "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/novaflix.png"
+  done
+}

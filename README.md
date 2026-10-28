@@ -1,94 +1,139 @@
-# NovaFlix
+<p align="center">
+  <img src="assets/logo.svg" alt="NovaFlix" width="112" />
+</p>
 
-Cliente de escritorio para buscar en el catálogo público de **visuales.uclv.cu**: búsqueda instantánea, favoritos, listas de reproducción, lista de "para ver", gestor de descargas y contador de descargas por contenido.
+<h1 align="center">NovaFlix</h1>
 
-No aloja contenido. Indexa el listado público del sitio en una caché local desechable y descarga solo cuando tú lo pides.
+<p align="center">
+  Buscador de escritorio para catálogos multimedia públicos.<br/>
+  Búsqueda instantánea, favoritos, listas y descargas con reanudación.
+</p>
 
-## Stack
+<p align="center">
+  <a href="../../releases"><img alt="Release" src="https://img.shields.io/github/v/release/novatic-cu/NovaFlix?color=0A84FF&label=release" /></a>
+  <a href="LICENSE"><img alt="Licencia" src="https://img.shields.io/badge/licencia-PolyForm%20Noncommercial%201.0.0-1D1D1F" /></a>
+  <a href="../../actions/workflows/release.yml"><img alt="Build" src="https://github.com/novatic-cu/NovaFlix/actions/workflows/release.yml/badge.svg" /></a>
+  <img alt="Plataformas" src="https://img.shields.io/badge/linux%20·%20windows%20·%20macOS-informational?color=0A84FF" />
+</p>
 
-- **Tauri 2** (Rust) + **React 19** + TypeScript + Vite + Tailwind v4
-- **SQLite** (`rusqlite`, FTS5) con dos bases separadas: caché y datos personales
-- `reqwest` (rustls), `motion` (springs), `lucide-react`
+---
 
-## Requisitos
+NovaFlix indexa un catálogo público en una caché local desechable y ofrece una interfaz de escritorio rápida para encontrar, guardar y descargar contenido. No aloja contenido ni requiere cuenta.
 
-- Node.js 24 + pnpm 12 (Corepack)
-- Rust 1.77+
-- Linux: `webkit2gtk-4.1`, `gtk3`, `libssl`, `openssl`, `libayatana-appindicator3`, `librsvg`, `patchelf` (patchelf solo para AppImage)
-- Windows: WebView2 (incluido en Windows 10/11) + MSVC Build Tools
+## Capturas
+
+| Buscar | Listas |
+|---|---|
+| ![Buscar](docs/screenshots/search.png) | ![Listas](docs/screenshots/lists.png) |
+
+| Descargas | Ajustes |
+|---|---|
+| ![Descargas](docs/screenshots/downloads.png) | ![Ajustes](docs/screenshots/settings.png) |
+
+> Las capturas de `docs/screenshots/` son de referencia. Sustitúyelas por las tuyas manteniendo los nombres.
+
+## Funciones
+
+- **Búsqueda FTS5** con prefijos y normalización leet: `Wick3d.For.Good.2025.1080p` se encuentra buscando `wicked`.
+- **Índice ligero en ~1 s**: 30.000 carpetas desde el árbol publicado; los archivos se listan al abrir cada carpeta.
+- **Crawl profundo opcional** para indexar también archivos sueltos.
+- **Favoritos** por contenido y por carpeta, con etiqueta y nota.
+- **Listas**: playlists ordenables y lista de "para ver" con estado *visto*.
+- **Descargas** con cola, reanudación por `Range`, progreso en vivo y contadores por ruta.
+- **Exportación M3U/M3U8** y reproducción con VLC/mpv/celluloid.
+- **Tema claro/oscuro** automático, `prefers-reduced-motion`, `prefers-reduced-transparency` y `prefers-contrast`.
+
+## Instalación
+
+### Linux · Debian / Ubuntu
+
+```bash
+sudo apt install ./NovaFlix_0.1.0_amd64.deb
+```
+
+### Linux · AppImage
+
+```bash
+chmod +x NovaFlix_0.1.0_amd64.AppImage
+./NovaFlix_0.1.0_amd64.AppImage
+```
+
+### Arch Linux
+
+```bash
+cd packaging/arch
+makepkg -si
+```
+
+O desde el paquete precompilado publicado en cada release (`novaflix-bin`).
+
+### Windows
+
+Descarga `NovaFlix_0.1.0_x64-setup.exe` (NSIS) o `NovaFlix_0.1.0_x64_en-US.msi` desde [Releases](../../releases). Requiere WebView2 (incluido en Windows 10/11).
+
+### macOS
+
+Descarga el `.dmg` de [Releases](../../releases). Las builds no están firmadas ni notarizadas: la primera vez, `Abrir` con clic derecho → *Abrir*.
 
 ## Desarrollo
+
+Requisitos: Node 24, pnpm 12, Rust 1.77+, WebKitGTK 4.1 en Linux.
 
 ```bash
 pnpm install
 pnpm tauri dev
 ```
 
-## Build
+Compilar instaladores:
 
 ```bash
-pnpm tauri build --bundles deb        # Linux .deb
-pnpm tauri build --bundles appimage   # Linux AppImage
-pnpm tauri build --bundles nsis       # Windows .exe
-pnpm tauri build --bundles msi        # Windows .msi
+pnpm tauri build --bundles deb        # Debian/Ubuntu
+pnpm tauri build --bundles appimage   # AppImage
+pnpm tauri build --bundles nsis,msi   # Windows
+pnpm tauri build --bundles dmg,app    # macOS
 ```
-
-Cada sistema compila su propio instalador; no hay compilación cruzada. El workflow `.github/workflows/build.yml` genera ambos en CI.
 
 ## Arquitectura
 
 ```
-src/                     React
+src/                     React 19 + TypeScript
   components/            Sidebar, Sheet, ItemRow, Toasts, AddToList
   screens/               Search, Browse, Favorites, Lists, Downloads, Settings
-  lib/                   ipc tipado, acciones, formato, tipos
-  store.ts               estado de UI (Zustand)
+  lib/                   IPC tipado, acciones, formato, tipos
 src-tauri/src/
   commands.rs            superficie IPC
-  index.rs               bootstrap, búsqueda FTS, browse, crawl
-  db.rs                  esquema y helpers
-  visuales.rs            cliente HTTP + parser del autoindex
+  index.rs               bootstrap, FTS, browse, crawl
+  db.rs                  esquema SQLite y helpers
+  catalog.rs             cliente HTTP + parser del autoindex
   downloads.rs           cola con Range/resume y eventos
   library.rs             favoritos, listas, contadores, M3U, reproductor
-  norm.rs                normalización leet + año
-  state.rs               estado compartido
+  norm.rs                normalización leet + extracción de año
 ```
 
-### Índice y caché
+Dos bases SQLite:
 
-| Capa | Contenido | Coste |
-|---|---|---|
-| Bootstrap | `listado.html` → 30k carpetas | 1 request, ~6 MB |
-| On-demand | listados reales al abrir carpeta | TTL 12 h, LRU 64 MB |
-| Profundo | crawl BFS completo (opt-in) | 50–70 min, ~60–90 MB |
+| Base | Contenido | Tamaño | Vida |
+|---|---|---|---|
+| `cache.db` | índice de rutas y listados visitados | 6–90 MB | desechable |
+| `app.db` | favoritos, listas, contadores, ajustes | < 5 MB | respaldo |
 
-`cache.db` es descartable: se puede vaciar desde Ajustes sin perder nada personal. `app.db` guarda favoritos, listas, contadores, historial y ajustes.
+Rutas: Linux `~/.local/share/com.novatic.novaflix/` · Windows `%APPDATA%\com.novatic.novaflix\`.
 
-### Búsqueda
+## Seguridad y privacidad
 
-FTS5 con prefijos sobre `dir_fts` y `file_fts`. La normalización convierte `Wick3d.For.Good.2025.1080p` en `wicked for good 2025`, de modo que buscar `wicked` encuentra variantes escritas para evadir filtros. Los años no se ven afectados por el mapeo leet.
+- Sin cuentas, sin telemetría, sin analytics.
+- Host allowlist en el backend y CSP estricta en el webview.
+- TLS verificado; descargas a `.part` con nombre saneado antes de renombrar.
+- Las dependencias se actualizan con Dependabot y se analizan con CodeQL.
 
-### Descargas
+Para reportar vulnerabilidades: [SECURITY.md](SECURITY.md).
 
-Cola con concurrencia 1, reanudación vía `Range` sobre `.part`, progreso por evento (`download://progress`) y contadores `attempts` / `completed` por ruta.
+## Contribuir
 
-### Reproducción
+Issues y pull requests son bienvenidos. Lee [CONTRIBUTING.md](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md).
 
-Siempre externa: `vlc`, `mpv`, `celluloid` o `totem` (configurable). El webview no reproduce `.mkv` con x265/AC3. Para listas se exporta M3U/M3U8 con URLs absolutas.
+## Licencia
 
-## Atajos
+**PolyForm Noncommercial 1.0.0**. Uso gratuito para fines personales, educativos, de investigación y para organizaciones sin ánimo de lucro. El uso comercial, la reventa o el servicio alojado requieren una licencia comercial: consulta [COMMERCIAL.md](COMMERCIAL.md).
 
-| Atajo | Acción |
-|---|---|
-| `Ctrl/⌘ + K` | Ir a Buscar y enfocar el campo |
-| `Esc` | Cerrar hoja modal |
-| Doble clic | Abrir carpeta / reproducir archivo |
-
-## Datos locales
-
-- Linux: `~/.local/share/com.novatic.novaflix/`
-- Windows: `%APPDATA%\com.novatic.novaflix\`
-
-## Aviso
-
-NovaFlix no aloja ni redistribuye contenido. Solo indexa un listado HTTP público; la descarga y el uso de los archivos es responsabilidad del usuario.
+NovaFlix no aloja ni redistribuye contenido; indexa un catálogo público y la descarga es responsabilidad del usuario.

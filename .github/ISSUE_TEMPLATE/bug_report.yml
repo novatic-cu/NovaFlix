@@ -1,0 +1,65 @@
+name: Bug report
+description: Algo no funciona como debería
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar. Busca primero en los issues existentes.
+  - type: input
+    id: version
+    attributes:
+      label: Versión de NovaFlix
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      options:
+        - Linux (deb)
+        - Linux (AppImage)
+        - Arch Linux
+        - Windows
+        - macOS
+        - Compilado desde código
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      placeholder: |
+        1. Abrir Buscar
+        2. Escribir "wicked"
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado actual
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs o capturas
+      description: Arrastra imágenes o pega la salida de la consola.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Comprobaciones
+      options:
+        - label: He buscado issues duplicados
+          required: true
+        - label: Uso la última versión publicada
+          required: true

@@ -29,8 +29,8 @@
     "active": true,
     "targets": ["deb", "appimage", "nsis", "msi"],
     "category": "Utility",
-    "shortDescription": "Buscador de Visuales UCLV",
-    "longDescription": "Buscador de escritorio con cache local para el catalogo de Visuales UCLV: busqueda, favoritos, listas de reproduccion y descargas.",
+    "shortDescription": "Buscador de escritorio para catálogos multimedia públicos",
+    "longDescription": "Buscador de escritorio con caché local: búsqueda instantánea, favoritos, listas de reproducción, lista de pendientes y gestor de descargas con reanudación.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

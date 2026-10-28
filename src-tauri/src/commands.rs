@@ -3,9 +3,7 @@ use std::sync::Arc;
 use serde_json::Value;
 use tauri::{AppHandle, State};
 
-use crate::{
-    downloads, index, library, state::AppState, visuales,
-};
+use crate::{catalog, downloads, index, library, state::AppState};
 
 #[tauri::command]
 pub async fn app_info(state: State<'_, Arc<AppState>>) -> Result<Value, String> {
@@ -13,7 +11,7 @@ pub async fn app_info(state: State<'_, Arc<AppState>>) -> Result<Value, String> 
         "version": env!("CARGO_PKG_VERSION"),
         "data_dir": state.data_dir.to_string_lossy(),
         "downloads_dir": state.downloads_dir.to_string_lossy(),
-        "base_url": visuales::BASE,
+        "base_url": catalog::BASE,
     }))
 }
 
@@ -88,7 +86,9 @@ pub async fn crawl_stop(state: State<'_, Arc<AppState>>) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub async fn favorites_list(state: State<'_, Arc<AppState>>) -> Result<Vec<library::Favorite>, String> {
+pub async fn favorites_list(
+    state: State<'_, Arc<AppState>>,
+) -> Result<Vec<library::Favorite>, String> {
     library::favorites(state.inner())
 }
 
@@ -121,7 +121,9 @@ pub async fn favorite_remove(
 }
 
 #[tauri::command]
-pub async fn lists_all(state: State<'_, Arc<AppState>>) -> Result<Vec<library::ListSummary>, String> {
+pub async fn lists_all(
+    state: State<'_, Arc<AppState>>,
+) -> Result<Vec<library::ListSummary>, String> {
     library::lists(state.inner())
 }
 
@@ -195,7 +197,9 @@ pub async fn list_mark_watched(
 }
 
 #[tauri::command]
-pub async fn counters_all(state: State<'_, Arc<AppState>>) -> Result<Vec<library::Counter>, String> {
+pub async fn counters_all(
+    state: State<'_, Arc<AppState>>,
+) -> Result<Vec<library::Counter>, String> {
     library::counters(state.inner())
 }
 
@@ -237,7 +241,9 @@ pub async fn download_enqueue(
 }
 
 #[tauri::command]
-pub async fn downloads_list(state: State<'_, Arc<AppState>>) -> Result<Vec<downloads::DownloadRow>, String> {
+pub async fn downloads_list(
+    state: State<'_, Arc<AppState>>,
+) -> Result<Vec<downloads::DownloadRow>, String> {
     downloads::list(state.inner())
 }
 
@@ -275,8 +281,7 @@ pub async fn export_m3u(
     state: State<'_, Arc<AppState>>,
     list_id: i64,
 ) -> Result<String, String> {
-    library::export_m3u(&app, state.inner(), list_id)
-        .map(|path| path.to_string_lossy().to_string())
+    library::export_m3u(&app, state.inner(), list_id).map(|path| path.to_string_lossy().to_string())
 }
 
 #[tauri::command]

@@ -1,10 +1,11 @@
 [package]
 name = "novaflix"
 version = "0.1.0"
-description = "Buscador de escritorio para el catalogo de Visuales UCLV"
+description = "Buscador de escritorio para catalogos multimedia publicos"
 authors = ["Novatic"]
 edition = "2021"
 rust-version = "1.77"
+license = "PolyForm-Noncommercial-1.0.0"
 
 [lib]
 name = "novaflix_lib"
