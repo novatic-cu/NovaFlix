@@ -11,7 +11,7 @@ trap 'rm -rf "$OUT"' EXIT
 echo "==> Descargando .deb de $TAG"
 gh release download "$TAG" --repo "$REPO" --pattern "*.deb" --dir "$OUT/debs"
 
-mkdir -p "$OUT/public/apt/pool/main" "$OUT/public/apt/dists/stable"
+mkdir -p "$OUT/public/apt/pool/main" "$OUT/public/apt/dists/stable/main/binary-amd64"
 cd "$OUT/public/apt"
 
 for deb in "$OUT"/debs/*.deb; do
@@ -23,20 +23,20 @@ for deb in "$OUT"/debs/*.deb; do
   cp "$deb" "pool/main/${prefix}/${pkg}/${pkg}_${ver}_${arch}.deb"
 done
 
-dpkg-scanpackages --multiversion pool /dev/null > dists/stable/Packages
-gzip -9c dists/stable/Packages > dists/stable/Packages.gz
+dpkg-scanpackages --multiversion --arch amd64 pool /dev/null \
+  > dists/stable/main/binary-amd64/Packages
+gzip -9c dists/stable/main/binary-amd64/Packages \
+  > dists/stable/main/binary-amd64/Packages.gz
 
-cat > dists/stable/Release <<EOF
-Origin: NovaFlix
-Label: NovaFlix
-Suite: stable
-Codename: stable
-Architectures: amd64 arm64
-Components: main
-Description: Buscador de escritorio para catalogos multimedia publicos
-Date: $(date -Ru)
-EOF
-apt-ftparchive release dists/stable >> dists/stable/Release
+apt-ftparchive \
+  -o APT::FTPArchive::Release::Origin=NovaFlix \
+  -o APT::FTPArchive::Release::Label=NovaFlix \
+  -o APT::FTPArchive::Release::Suite=stable \
+  -o APT::FTPArchive::Release::Codename=stable \
+  -o APT::FTPArchive::Release::Architectures=amd64 \
+  -o APT::FTPArchive::Release::Components=main \
+  -o APT::FTPArchive::Release::Description="Buscador de escritorio para catalogos multimedia publicos" \
+  release dists/stable > dists/stable/Release
 
 if [[ -n "${APT_GPG_KEY_ID:-}" ]]; then
   gpg --batch --yes --local-user "$APT_GPG_KEY_ID" --clearsign -o dists/stable/InRelease dists/stable/Release

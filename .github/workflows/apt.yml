@@ -42,7 +42,8 @@ jobs:
       - name: Construir repositorio APT
         run: |
           set -euo pipefail
-          mkdir -p public/apt/pool/main public/apt/dists/stable
+          ARCH=amd64
+          mkdir -p public/apt/pool/main "public/apt/dists/stable/main/binary-${ARCH}"
           cd public/apt
 
           for deb in ../../debs/*.deb; do
@@ -54,22 +55,23 @@ jobs:
             cp "$deb" "pool/main/${prefix}/${pkg}/${pkg}_${ver}_${arch}.deb"
           done
 
-          dpkg-scanpackages --multiversion pool /dev/null > dists/stable/Packages
-          gzip -9c dists/stable/Packages > dists/stable/Packages.gz
+          dpkg-scanpackages --multiversion --arch "$ARCH" pool /dev/null \
+            > "dists/stable/main/binary-${ARCH}/Packages"
+          gzip -9c "dists/stable/main/binary-${ARCH}/Packages" \
+            > "dists/stable/main/binary-${ARCH}/Packages.gz"
 
-          cat > dists/stable/Release <<EOF
-          Origin: NovaFlix
-          Label: NovaFlix
-          Suite: stable
-          Codename: stable
-          Architectures: amd64 arm64
-          Components: main
-          Description: Buscador de escritorio para catalogos multimedia publicos
-          Date: $(date -Ru)
-          EOF
+          apt-ftparchive \
+            -o APT::FTPArchive::Release::Origin=NovaFlix \
+            -o APT::FTPArchive::Release::Label=NovaFlix \
+            -o APT::FTPArchive::Release::Suite=stable \
+            -o APT::FTPArchive::Release::Codename=stable \
+            -o APT::FTPArchive::Release::Architectures="$ARCH" \
+            -o APT::FTPArchive::Release::Components=main \
+            -o APT::FTPArchive::Release::Description="Buscador de escritorio para catalogos multimedia publicos" \
+            release dists/stable > dists/stable/Release
 
-          apt-ftparchive release dists/stable >> dists/stable/Release
           cat dists/stable/Release
+          head -20 "dists/stable/main/binary-${ARCH}/Packages"
 
       - name: Firmar repositorio
         env:
