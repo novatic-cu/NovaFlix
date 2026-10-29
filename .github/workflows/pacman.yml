@@ -91,7 +91,7 @@ jobs:
           SigLevel = Required DatabaseOptional
           Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
 
-          sudo pacman -Sy novaflix</pre>
+          sudo pacman -Sy novaflix-bin</pre>
           </body></html>
           HTML
 
