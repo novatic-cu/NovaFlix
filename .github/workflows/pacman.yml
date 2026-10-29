@@ -1,0 +1,106 @@
+name: pacman
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag del release (ej. v0.1.0)"
+        required: true
+        default: "v0.1.0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pacman-repo
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    container: archlinux:latest
+
+    steps:
+      - name: Preparar contenedor
+        run: pacman -Syu --noconfirm --needed git curl gnupg pacman-contrib >/dev/null
+
+      - uses: actions/checkout@v4
+
+      - name: Descargar paquete del release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.release.tag_name || github.event.inputs.tag || github.ref_name }}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          mkdir -p pkg
+          curl -fsSL -o pkg/novaflix.pkg.tar.zst \
+            "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/novaflix-bin-${TAG#v}-1-x86_64.pkg.tar.zst"
+          ls -la pkg
+
+      - name: Construir y firmar repositorio pacman
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.APT_GPG_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GPG_PRIVATE_KEY:-}" ]; then
+            echo "::error::Falta el secret APT_GPG_PRIVATE_KEY (se reutiliza para firmar pacman)"
+            exit 1
+          fi
+
+          printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import
+          KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^fpr:/ {print $10; exit}')
+          echo "Clave: $KEY_ID"
+
+          mkdir -p public/pacman/x86_64
+          cd public/pacman/x86_64
+
+          cp ../../../pkg/novaflix.pkg.tar.zst .
+          gpg --batch --yes --detach-sign --no-armor novaflix.pkg.tar.zst
+
+          repo-add --sign --key "$KEY_ID" novaflix.db.tar.gz novaflix.pkg.tar.zst
+
+          # GitHub Pages no sirve symlinks: copiamos los archivos reales con el nombre que pide pacman.
+          cp novaflix.db.tar.gz novaflix.db
+          cp novaflix.files.tar.gz novaflix.files
+          cp novaflix.db.tar.gz.sig novaflix.db.sig
+          cp novaflix.files.tar.gz.sig novaflix.files.sig
+
+          gpg --armor --export "$KEY_ID" > novaflix.gpg
+
+          ls -la
+
+      - name: Página del repositorio
+        run: |
+          cat > public/index.html <<'HTML'
+          <!doctype html>
+          <html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio pacman</title>
+          <style>body{font:15px/1.6 system-ui,sans-serif;max-width:760px;margin:64px auto;padding:0 20px;color:#1d1d1f}
+          code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
+          pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+          <body>
+          <h1>NovaFlix · repositorio pacman</h1>
+          <p>Índice Arch del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
+          <pre>sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+          sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
+          # /etc/pacman.conf
+          [novaflix]
+          SigLevel = Required DatabaseOptional
+          Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
+
+          sudo pacman -Sy novaflix</pre>
+          </body></html>
+          HTML
+
+      - name: Publicar en gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          keep_files: true
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: "pacman: ${{ env.TAG }}"
