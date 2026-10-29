@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: pacman-repo
+  group: gh-pages-publish
   cancel-in-progress: false
 
 jobs:
