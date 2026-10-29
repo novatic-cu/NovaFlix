@@ -63,6 +63,7 @@ jobs:
           repo-add --sign --key "$KEY_ID" novaflix.db.tar.gz novaflix.pkg.tar.zst
 
           # GitHub Pages no sirve symlinks: copiamos los archivos reales con el nombre que pide pacman.
+          rm -f novaflix.db novaflix.files novaflix.db.sig novaflix.files.sig
           cp novaflix.db.tar.gz novaflix.db
           cp novaflix.files.tar.gz novaflix.files
           cp novaflix.db.tar.gz.sig novaflix.db.sig
