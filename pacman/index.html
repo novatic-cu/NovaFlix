@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio pacman</title>
+<style>body{font:15px/1.6 system-ui,sans-serif;max-width:760px;margin:64px auto;padding:0 20px;color:#1d1d1f}
+code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
+pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+<body>
+<h1>NovaFlix · repositorio pacman</h1>
+<p>Índice Arch del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
+<pre>sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
+# /etc/pacman.conf
+[novaflix]
+SigLevel = Required DatabaseOptional
+Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
+
+sudo pacman -Sy novaflix</pre>
+</body></html>
