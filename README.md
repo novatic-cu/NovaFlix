@@ -18,6 +18,8 @@
 
 ---
 
+**Sitio web:** <https://novatic-cu.github.io/NovaFlix/> · **Repositorios:** [APT](https://novatic-cu.github.io/NovaFlix/apt/) · [pacman](https://novatic-cu.github.io/NovaFlix/pacman/)
+
 NovaFlix indexa un catálogo público en una caché local desechable y ofrece una interfaz de escritorio rápida para encontrar, guardar y descargar contenido. No aloja contenido ni requiere cuenta.
 
 ## Capturas
