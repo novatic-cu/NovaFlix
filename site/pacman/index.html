@@ -44,11 +44,13 @@
             <div class="step-num">01</div>
             <div>
               <div class="step-title">Clave pública</div>
-              <p class="step-text">Registra y firma localmente la clave del repositorio.</p>
+              <p class="step-text"><code>pacman-key</code> solo acepta ficheros locales, no URLs: descarga la clave y luego regístrala y fírmala.</p>
               <div class="code">
-                <button class="copy-btn" data-copy="sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+                <button class="copy-btn" data-copy="curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
+sudo pacman-key --add /tmp/novaflix.gpg
 sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0">Copiar</button>
-                <pre>sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+                <pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
+sudo pacman-key --add /tmp/novaflix.gpg
 sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0</pre>
               </div>
             </div>

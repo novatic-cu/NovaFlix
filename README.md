@@ -75,7 +75,9 @@ sudo apt install ./NovaFlix_0.1.0_amd64.deb
 ### Arch Linux · repositorio pacman (recomendado)
 
 ```bash
-sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+# pacman-key solo acepta ficheros locales: descarga la clave primero
+curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
+sudo pacman-key --add /tmp/novaflix.gpg
 sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
 
 # añade a /etc/pacman.conf
