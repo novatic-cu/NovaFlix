@@ -1,20 +1,20 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Thu, 29 Oct 2026 00:56:40 +0000
+Date: Thu, 29 Oct 2026 01:25:13 +0000
 Description: Buscador de escritorio para catalogos multimedia publicos
 Label: NovaFlix
 Origin: NovaFlix
 Suite: stable
 MD5Sum:
  7f14c0c1a536b43fe123e2106a36d31e              657 main/binary-amd64/Packages
- 6778509e96c80b958db917f69b7b6b8d              460 main/binary-amd64/Packages.gz
+ 5d7f7312e0f622c848dfd3eba5f306f3              460 main/binary-amd64/Packages.gz
 SHA1:
  013a5ab7770ff9258970de0cf19694f9d7801873              657 main/binary-amd64/Packages
- 869601bbeea4e3d166d2d0a2c2feebe2e13c1e3d              460 main/binary-amd64/Packages.gz
+ 323ece4bab3c53d78ec87a59b5379bbaa8719b4e              460 main/binary-amd64/Packages.gz
 SHA256:
  9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 main/binary-amd64/Packages
- ef6ffe45fb1151522db4122aed02337d7688d5376c91ee81f7df7d915dbda915              460 main/binary-amd64/Packages.gz
+ f5e5a68dfbddf65190a8874e7d2b3aec639d07e925c1a3f8ddeb9b59a53b1197              460 main/binary-amd64/Packages.gz
 SHA512:
  d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 main/binary-amd64/Packages
- ab1621d72cc1be9de5921ddd46c2d166c6cc7b1e8b35218b6e08e4011c34748ed5d149cb3fc101410071eebb67076aec3c67934d46b609c95fd2bde3d5aedb91              460 main/binary-amd64/Packages.gz
+ 4658d79af7fdb1c5efdac80c3fca309e61c0a1f961f02230d937eb909c6c8fb9f41d71ff1487b02be924bd589fa8868eaaf82fc784d0c6d0420f0ac8c930a8c4              460 main/binary-amd64/Packages.gz
