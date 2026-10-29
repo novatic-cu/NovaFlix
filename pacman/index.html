@@ -1,17 +1,149 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio pacman</title>
-<style>body{font:15px/1.6 system-ui,sans-serif;max-width:760px;margin:64px auto;padding:0 20px;color:#1d1d1f}
-code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
-pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Repositorio pacman — NovaFlix</title>
+<meta name="description" content="Repositorio pacman firmado de NovaFlix para Arch Linux." />
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/novatic.css" />
+</head>
 <body>
-<h1>NovaFlix · repositorio pacman</h1>
-<p>Índice Arch del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
-<pre>sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
-sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
-# /etc/pacman.conf
-[novaflix]
-SigLevel = Required DatabaseOptional
-Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
 
-sudo pacman -Sy novaflix-bin</pre>
-</body></html>
+<header class="site-header scrolled" id="header">
+  <div class="container header-inner">
+    <a class="brand" href="../">
+      <span class="brand-name">NOVATIC</span>
+      <span class="brand-divider"></span>
+      <span class="brand-product">NovaFlix</span>
+    </a>
+    <nav class="nav">
+      <a href="../#producto">Producto</a>
+      <a href="../#instalar">Instalación</a>
+      <a href="../apt/">APT</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargar</a>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="container">
+    <div class="breadcrumb"><a href="../">NovaFlix</a> <span>/</span> <span>pacman</span></div>
+    <h1 class="page-title">Repositorio pacman</h1>
+    <p class="page-sub">Binario oficial para Arch Linux, firmado y actualizado en cada release. No requiere AUR.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div>
+              <div class="step-title">Clave pública</div>
+              <p class="step-text">Registra y firma localmente la clave del repositorio.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0">Copiar</button>
+                <pre>sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">02</div>
+            <div>
+              <div class="step-title">Repositorio</div>
+              <p class="step-text">Añade el bloque a <code>/etc/pacman.conf</code>.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="[novaflix]
+SigLevel = Required DatabaseOptional
+Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch">Copiar</button>
+                <pre>[novaflix]
+SigLevel = Required DatabaseOptional
+Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">03</div>
+            <div>
+              <div class="step-title">Instalar</div>
+              <p class="step-text">El paquete se llama <code>novaflix-bin</code> y declara <code>provides=novaflix</code>.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="sudo pacman -Sy novaflix-bin">Copiar</button>
+                <pre>sudo pacman -Sy novaflix-bin</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 36px;">
+          Con el repositorio configurado, <code>paru -S novaflix-bin</code> también resuelve el paquete.
+          AUR sigue con el registro de cuentas cerrado; el paquete se publicará allí cuando reabra.
+        </div>
+
+        <div style="margin-top: 30px;">
+          <p class="step-text" style="margin: 0 0 10px;">Paquete suelto (sin repositorio)</p>
+          <div class="code">
+            <button class="copy-btn" data-copy="paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst">Copiar</button>
+            <pre>paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst</pre>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="badge">Firmado</span>
+        <h2 class="section-title" style="font-size: 34px; margin-top: 18px;">Clave del repositorio</h2>
+        <p class="section-subtitle" style="font-size: 14px;">La misma clave firma APT y pacman.</p>
+        <div class="code" style="margin-top: 18px;">
+          <pre>F005 E863 F53A 70D6 0447
+9A36 9FE8 FBEF 7C21 10F0</pre>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px solid var(--line); padding-top: 22px;">
+          <p class="step-text" style="margin: 0 0 10px;">Arquitectura</p>
+          <p class="step-text" style="margin: 0;">x86_64 · Arch Linux</p>
+        </div>
+
+        <div style="margin-top: 22px;">
+          <p class="step-text" style="margin: 0 0 10px;">Dependencias</p>
+          <p class="step-text" style="margin: 0;">webkit2gtk-4.1 · gtk3 · openssl · hicolor-icon-theme</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="padding-top: 0; border: none;">
+      <span>© 2026 NOVATIC S.U.R.L. · NovaFlix</span>
+      <span class="footer-legal-links">
+        <a href="../">Inicio</a>
+        <a href="../apt/">APT</a>
+        <a href="https://github.com/novatic-cu/NovaFlix">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.getAttribute('data-copy') || '');
+        button.textContent = 'Copiado';
+        button.dataset.copied = 'true';
+        setTimeout(() => { button.textContent = 'Copiar'; button.dataset.copied = 'false'; }, 1800);
+      } catch { button.textContent = 'Error'; setTimeout(() => { button.textContent = 'Copiar'; }, 1800); }
+    });
+  });
+</script>
+</body>
+</html>

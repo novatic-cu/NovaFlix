@@ -1,12 +1,143 @@
-<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio APT</title>
-<style>body{font:15px/1.6 system-ui,sans-serif;max-width:720px;margin:64px auto;padding:0 20px;color:#1d1d1f}
-code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
-pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Repositorio APT — NovaFlix</title>
+<meta name="description" content="Repositorio APT firmado de NovaFlix para Debian y Ubuntu." />
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/novatic.css" />
+</head>
 <body>
-<h1>NovaFlix · repositorio APT</h1>
-<p>Índice Debian del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
-<pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
-echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" | sudo tee /etc/apt/sources.list.d/novaflix.list
-sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
-</body></html>
+
+<header class="site-header scrolled" id="header">
+  <div class="container header-inner">
+    <a class="brand" href="../">
+      <span class="brand-name">NOVATIC</span>
+      <span class="brand-divider"></span>
+      <span class="brand-product">NovaFlix</span>
+    </a>
+    <nav class="nav">
+      <a href="../#producto">Producto</a>
+      <a href="../#instalar">Instalación</a>
+      <a href="../pacman/">pacman</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargar</a>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="container">
+    <div class="breadcrumb"><a href="../">NovaFlix</a> <span>/</span> <span>APT</span></div>
+    <h1 class="page-title">Repositorio APT</h1>
+    <p class="page-sub">Índice Debian firmado, actualizado en cada release. Compatible con Debian 12, Ubuntu 22.04 y posteriores.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div>
+              <div class="step-title">Clave de firma</div>
+              <p class="step-text">Descarga y registra la clave pública del repositorio.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg">Copiar</button>
+                <pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">02</div>
+            <div>
+              <div class="step-title">Repositorio</div>
+              <p class="step-text">Añade el origen firmado a APT.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="echo &quot;deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main&quot; | sudo tee /etc/apt/sources.list.d/novaflix.list">Copiar</button>
+                <pre>echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] \
+https://novatic-cu.github.io/NovaFlix/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/novaflix.list</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">03</div>
+            <div>
+              <div class="step-title">Instalar</div>
+              <p class="step-text">El paquete se llama <code>nova-flix</code>; el binario instalado es <code>novaflix</code>.</p>
+              <div class="code">
+                <button class="copy-btn" data-copy="sudo apt update && sudo apt install nova-flix">Copiar</button>
+                <pre>sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 36px;">
+          Actualizar: <code>sudo apt update &amp;&amp; sudo apt upgrade nova-flix</code>. Desinstalar:
+          <code>sudo apt remove nova-flix</code>.
+        </div>
+      </div>
+
+      <div>
+        <span class="badge">Firmado</span>
+        <h2 class="section-title" style="font-size: 34px; margin-top: 18px;">Clave del repositorio</h2>
+        <p class="section-subtitle" style="font-size: 14px;">
+          Verifica la huella antes de confiar en el origen.
+        </p>
+        <div class="code" style="margin-top: 18px;">
+          <pre>F005 E863 F53A 70D6 0447
+9A36 9FE8 FBEF 7C21 10F0</pre>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px solid var(--line); padding-top: 22px;">
+          <p class="step-text" style="margin: 0 0 10px;">Comprobación manual</p>
+          <div class="code">
+            <pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/dists/stable/InRelease \
+  | gpg --verify</pre>
+          </div>
+        </div>
+
+        <div style="margin-top: 26px;">
+          <p class="step-text" style="margin: 0 0 10px;">Arquitectura</p>
+          <p class="step-text" style="margin: 0;">amd64 · Debian 12 · Ubuntu 22.04+</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="padding-top: 0; border: none;">
+      <span>© 2026 NOVATIC S.U.R.L. · NovaFlix</span>
+      <span class="footer-legal-links">
+        <a href="../">Inicio</a>
+        <a href="../pacman/">pacman</a>
+        <a href="https://github.com/novatic-cu/NovaFlix">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.getAttribute('data-copy') || '');
+        button.textContent = 'Copiado';
+        button.dataset.copied = 'true';
+        setTimeout(() => { button.textContent = 'Copiar'; button.dataset.copied = 'false'; }, 1800);
+      } catch { button.textContent = 'Error'; setTimeout(() => { button.textContent = 'Copiar'; }, 1800); }
+    });
+  });
+</script>
+</body>
+</html>
