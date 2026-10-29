@@ -75,7 +75,7 @@ jobs:
 
       - name: Página del repositorio
         run: |
-          cat > public/index.html <<'HTML'
+          cat > public/pacman/index.html <<'HTML'
           <!doctype html>
           <html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio pacman</title>
           <style>body{font:15px/1.6 system-ui,sans-serif;max-width:760px;margin:64px auto;padding:0 20px;color:#1d1d1f}
@@ -94,6 +94,15 @@ jobs:
           sudo pacman -Sy novaflix</pre>
           </body></html>
           HTML
+
+          cat > public/index.html <<'HTML2'
+          <!doctype html><html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorios</title>
+          <style>body{font:15px/1.7 system-ui,sans-serif;max-width:640px;margin:64px auto;padding:0 20px;color:#1d1d1f}a{color:#0a84ff}</style>
+          </head><body><h1>NovaFlix</h1>
+          <p>Repositorios de paquetes del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
+          <ul><li><a href="apt/">APT</a> — Debian, Ubuntu</li><li><a href="pacman/">pacman</a> — Arch Linux</li></ul>
+          </body></html>
+          HTML2
 
       - name: Publicar en gh-pages
         uses: peaceiris/actions-gh-pages@v4

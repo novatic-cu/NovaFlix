@@ -70,13 +70,27 @@ curl -LO https://github.com/novatic-cu/NovaFlix/releases/latest/download/NovaFli
 sudo apt install ./NovaFlix_0.1.0_amd64.deb
 ```
 
-### Arch Linux · AUR
+### Arch Linux · repositorio pacman (recomendado)
 
 ```bash
-paru -S novaflix-bin
+sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
+
+# añade a /etc/pacman.conf
+[novaflix]
+SigLevel = Required DatabaseOptional
+Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
+
+sudo pacman -Sy novaflix-bin
 ```
 
-El `PKGBUILD` vive en [`packaging/aur`](packaging/aur) y el workflow `aur.yml` lo publica automáticamente en cada release. Si AUR aún no lista el paquete, instala el binario directamente:
+Con el repositorio configurado, `paru -S novaflix-bin` también resuelve el paquete sin tocar AUR.
+
+### Arch Linux · AUR
+
+`aur.yml` mantiene `novaflix-bin` actualizado en cada release. El registro de cuentas de AUR está cerrado temporalmente, así que la primera publicación sigue pendiente; mientras tanto usa el repositorio pacman de arriba.
+
+### Arch Linux · paquete suelto
 
 ```bash
 paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst
