@@ -183,11 +183,13 @@ sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
         </div>
         <p class="install-desc">Repositorio pacman propio, firmado. <code>paru</code> también lo resuelve.</p>
         <div class="code">
-          <button class="copy-btn" data-copy="sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+          <button class="copy-btn" data-copy="curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
+sudo pacman-key --add /tmp/novaflix.gpg
 sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
 sudo pacman -Sy novaflix-bin">Copiar</button>
-          <pre><span class="c"># clave del repositorio</span>
-sudo pacman-key --add https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg
+          <pre><span class="c"># clave del repositorio (pacman-key no acepta URLs)</span>
+curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
+sudo pacman-key --add /tmp/novaflix.gpg
 sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
 
 <span class="c"># /etc/pacman.conf</span>
