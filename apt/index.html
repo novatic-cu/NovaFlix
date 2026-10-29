@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>NovaFlix · repositorio APT</title>
+<style>body{font:15px/1.6 system-ui,sans-serif;max-width:720px;margin:64px auto;padding:0 20px;color:#1d1d1f}
+code{background:#f5f5f7;padding:2px 6px;border-radius:6px;font-size:13px}
+pre{background:#f5f5f7;padding:14px;border-radius:10px;overflow-x:auto}</style></head>
+<body>
+<h1>NovaFlix · repositorio APT</h1>
+<p>Índice Debian del proyecto <a href="https://github.com/novatic-cu/NovaFlix">NovaFlix</a>.</p>
+<pre>curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
+echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" | sudo tee /etc/apt/sources.list.d/novaflix.list
+sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
+</body></html>

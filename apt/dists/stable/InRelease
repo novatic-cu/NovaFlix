@@ -4,34 +4,34 @@ Hash: SHA512
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Wed, 28 Oct 2026 18:36:14 +0000
+Date: Thu, 29 Oct 2026 00:56:40 +0000
 Description: Buscador de escritorio para catalogos multimedia publicos
 Label: NovaFlix
 Origin: NovaFlix
 Suite: stable
 MD5Sum:
  7f14c0c1a536b43fe123e2106a36d31e              657 main/binary-amd64/Packages
- 59794221887791fe14db73bf2e652cce              460 main/binary-amd64/Packages.gz
+ 6778509e96c80b958db917f69b7b6b8d              460 main/binary-amd64/Packages.gz
 SHA1:
  013a5ab7770ff9258970de0cf19694f9d7801873              657 main/binary-amd64/Packages
- c75226be5c57ba4827b25ab09c597f9983d1a186              460 main/binary-amd64/Packages.gz
+ 869601bbeea4e3d166d2d0a2c2feebe2e13c1e3d              460 main/binary-amd64/Packages.gz
 SHA256:
  9bd0aed846b954eda2fe55ef113fdd7470a34ecd3124160ec3d62c3ad8124539              657 main/binary-amd64/Packages
- 1b0c4eead8933fa892023361cf3e7f324a58c88061506186cb7a6f9e3cefc8d8              460 main/binary-amd64/Packages.gz
+ ef6ffe45fb1151522db4122aed02337d7688d5376c91ee81f7df7d915dbda915              460 main/binary-amd64/Packages.gz
 SHA512:
  d0d14550339d8f1063bf7a9d1d16def6d0a5fd875e4501f092d99414892d4cf0ef0a13511e057e32e2ab33674adcb716c8a9920a1ef3666cc6e72dc25decda62              657 main/binary-amd64/Packages
- 5ef4c4674c2931e4c7b4756ab2f76de807868d2088e5eb20a1daaf1555c2991c9bd660757d9b0c677755bbe0b21a7dbb1237a13f81f5b2e45da4bdfca784f61f              460 main/binary-amd64/Packages.gz
+ ab1621d72cc1be9de5921ddd46c2d166c6cc7b1e8b35218b6e08e4011c34748ed5d149cb3fc101410071eebb67076aec3c67934d46b609c95fd2bde3d5aedb91              460 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCgAdFiEE8AXoY/U6cNYER5o2n+j773whEPAFAmriQJ4ACgkQn+j773wh
-EPA5SAv/TsxuMAWCWc5hMZV17GRZMVsHAs/GUzG3zYfZMN7TdiQCKRNLwnhkot2F
-/JWHMe7KkhjCwR2Brd8Uei5RGytLsK7NdLll08VJbCiiixbfzFkwQYYDkHs0L7th
-1cNjmg7AJVz7tTybtOi9B9x0Q3cpqDITgjjLvXm+XPiSeQvrH5tMT+nTUF1LZ4gW
-LAQCUBbm61YlBGJzIY7e5xaflHWheaqbpXHJ85IRK7Kp5Gsg8j6OIe8yErJJrsdc
-tiM89Kug0kWalwrZkY/yAnkWAyr0y5RopwVIfw+dYvzSlUwsaXfn0yfU577rBCmA
-6NlyUhsMn7jDy3sIOYK7WYwLDJKa0XhMOQN6WbKObCjGwVbY5alOVsDbI9vNDzIj
-6ikHvpK0BCv624SzqHn0uZ5Fy0KtAtnUupmwQXti5EF7DZjQ8fHVLmvN2xL1p58/
-BvULXojC/TLRi44xaPdLgYmut1WXI9eGArwQBvD95ojhN6v49hQ2jvcR3LAYd0Cb
-5Nnn6cht
-=Cz4V
+iQGzBAEBCgAdFiEE8AXoY/U6cNYER5o2n+j773whEPAFAmrimckACgkQn+j773wh
+EPAsrgv/Wd4ogs30Cm7OLF/Xz6bRuUeq7V9QFKHm2+tV/Q8IRhS9VF+ofmQOB/hQ
+jzhO7Ibarmqe/AagJ78935VT6um1E9JQLSMu9sFwjeFcdQP9TlMcJoKMZLHwcI1F
+JoLrp0eVfsCLAhvP0t3gHtAuVpC0nGlXcjkR/yWOZI0nbPdOsFXxmqr4zWv2IWNx
+AsC6/+pEFuM8xc9fHX6MUMMA/meY0MGve8N/doHsR+J42tZIjrRAto3zZOpT3Xoo
+tWER+jPFqMMJD6/MIz8w/OBv5Do/AFmpjV3fyQfxwFyJOzCk3ejiUD5Jb1cEvC/t
+c/fRNXGEtfwqseNdvNAVOlj8P6tdBTFP1UHzAlquKEoyKsootI1PM/lKIkN1KClb
+RlF5mDSpbaplq/eSzNoaTVReWi+E4n6Bi/dissRtGjxuLrNip2qr7+MolT3i4c+U
+rfpbxvXRCwGS1I1xjZP9C1YKg/jZE5VRs+HesiPMGfK4yrBIh3r3JazU91QuQrUX
+Qpk3YnWu
+=41Kl
 -----END PGP SIGNATURE-----
