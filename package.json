@@ -24,10 +24,10 @@
     "@tauri-apps/cli": "^2.9.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^6.1.2",
     "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.7"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
   },
   "description": "Buscador de escritorio para catálogos multimedia públicos",
   "license": "PolyForm-Noncommercial-1.0.0",
