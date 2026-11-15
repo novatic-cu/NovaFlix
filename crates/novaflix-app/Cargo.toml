@@ -10,10 +10,10 @@ repository.workspace = true
 
 [dependencies]
 directories = "6.0.0"
-eframe = "0.36"
-egui = "0.36"
+eframe = "0.37"
+egui = "0.37"
 egui-phosphor = "0.14.0"
-egui_extras = "0.36"
+egui_extras = "0.37"
 novaflix-core = { path = "../novaflix-core" }
 png = "0.18.1"
 rfd = "0.17.2"
