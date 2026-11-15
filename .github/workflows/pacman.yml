@@ -26,7 +26,7 @@ jobs:
       - name: Preparar contenedor
         run: pacman -Syu --noconfirm --needed git curl gnupg pacman-contrib >/dev/null
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Copiar sitio
         run: |
