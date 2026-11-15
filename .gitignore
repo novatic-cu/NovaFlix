@@ -1,9 +1,16 @@
-node_modules
-dist
-dist-ssr
+# Rust
+/target
+**/*.rs.bk
+
+# Datos y artefactos locales
+*.part
 *.local
 .DS_Store
-src-tauri/target
-src-tauri/gen
-.vscode
 *.log
+.vscode
+.idea
+
+# Empaquetado
+/dist
+/artifacts
+/arch-out

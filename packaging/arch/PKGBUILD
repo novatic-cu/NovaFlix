@@ -1,0 +1,25 @@
+# PKGBUILD de empaquetado del release (lo usa .github/workflows/release.yml, no el AUR).
+# Construye novaflix-bin-<ver>-1-x86_64.pkg.tar.zst a partir del tarball binario ya generado.
+pkgname=novaflix-bin
+pkgver=${NOVAFLIX_VERSION:?define NOVAFLIX_VERSION}
+pkgrel=1
+pkgdesc="Explorador de catálogos multimedia públicos"
+arch=('x86_64')
+url="https://github.com/novatic-cu/NovaFlix"
+license=('custom:PolyForm-Noncommercial-1.0.0')
+depends=('libxkbcommon' 'libxkbcommon-x11' 'wayland' 'libglvnd' 'libx11' 'libxcursor' 'libxi' 'dbus' 'hicolor-icon-theme')
+optdepends=('vlc: reproductor externo' 'mpv: reproductor externo')
+provides=('novaflix')
+conflicts=('novaflix')
+options=('!strip')
+source=("novaflix-${pkgver}-x86_64.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  install -Dm755 "${srcdir}/novaflix" "${pkgdir}/usr/bin/novaflix"
+  install -Dm644 "${srcdir}/novaflix.desktop" "${pkgdir}/usr/share/applications/novaflix.desktop"
+  for size in 16 22 24 32 48 64 128 256 512; do
+    install -Dm644 "${srcdir}/icons/novaflix-${size}.png" \
+      "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/novaflix.png"
+  done
+}

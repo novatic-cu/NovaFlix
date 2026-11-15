@@ -2,6 +2,38 @@
 
 Todas las versiones relevantes se documentan aquí. Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y versionado [SemVer](https://semver.org/lang/es/).
 
+## [2.0.0-alpha.1] — 2026-11-14
+
+Reescritura completa en Rust (la versión 1 queda en la rama `v1`).
+
+### Añadido
+
+- Aplicación nativa en Rust (`egui`) para Linux y Windows, sin WebView2 ni WebKitGTK.
+- Interfaz de aplicación de streaming («Nova Glass»): portada con novedades, estanterías, categorías, ficha por título, descargas con anillos de progreso, tema oscuro/claro, atajos de teclado y «reducir movimiento».
+- Portadas generadas de forma determinista, sin servicios externos.
+- Transporte **HTTP o FTP a elección** (Automático, HTTP, FTP). Cliente FTP propio, de solo lectura (`MLSD`/`LIST`, `SIZE`, `REST`, `RETR`) con soporte de proxy SOCKS5.
+- **Diagnóstico de red**: DNS, puerto 21, túnel `CONNECT` por el proxy y HTTPS, con un veredicto en lenguaje llano; en modo Automático se elige HTTP cuando FTP no es posible.
+- Descargas con cola persistente, `.part`, reanudación (`Range`/`REST`), verificación de tamaño, límite de velocidad y descarga recursiva de carpetas.
+- Migración automática de los datos de la versión 1, con copia `app.db.v1.bak`.
+- Empaquetado con `cargo-packager` (`.deb`, `.AppImage`, NSIS, MSI), `.tar.gz` y paquete Arch generados por CI, y `SHA256SUMS`.
+- Documentación Spec-Driven Development (`.specify/`, `specs/`, `docs/adr/`).
+- Nuevo icono.
+
+### Cambiado
+
+- El analizador de listados reconoce el formato actual del servidor (tabla de Apache con fechas ISO) además del anterior.
+- Las publicaciones en APT, pacman y AUR solo se disparan con versiones estables (`released`), no con prereleases.
+- CI en Linux y Windows (formato, clippy, pruebas, MSRV, auditoría de dependencias, CodeQL para Rust).
+
+### Corregido
+
+- Las rutas con `&` ya no se guardan escapadas (`&amp;`); la migración repara las de la versión 1.
+- `listado.html` con codificación mixta (UTF-8/Latin-1) ya no rompe el índice.
+
+### Eliminado
+
+- Soporte de macOS en esta serie (la versión 1 sigue disponible).
+
 ## [0.1.0] — 2026-10-27
 
 ### Añadido

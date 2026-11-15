@@ -1,11 +1,12 @@
 [Desktop Entry]
 Type=Application
 Name=NovaFlix
-GenericName=Buscador multimedia
-Comment=Busca, organiza y descarga desde catálogos multimedia públicos
+GenericName=Explorador multimedia
+Comment=Explora, busca y descarga desde catálogos multimedia públicos
 Exec=novaflix %U
 Icon=novaflix
 Terminal=false
 Categories=AudioVideo;Player;Utility;
-Keywords=search;media;catalog;download;playlist;
+Keywords=search;media;catalog;download;playlist;movies;series;
 StartupNotify=true
+StartupWMClass=com.novatic.novaflix

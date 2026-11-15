@@ -4,75 +4,192 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Etiqueta a publicar (ej. v2.0.0-alpha.1); debe existir"
+        required: true
 
 permissions:
   contents: write
 
+env:
+  CARGO_TERM_COLOR: always
+  PACKAGER_VERSION: "0.11.8"
+
 jobs:
-  publish:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: ubuntu-22.04
-            args: "--bundles deb,appimage"
-            targets: ""
-          - platform: windows-latest
-            args: "--bundles nsis,msi"
-            targets: ""
-          - platform: macos-latest
-            args: "--target universal-apple-darwin --bundles dmg,app"
-            targets: "aarch64-apple-darwin,x86_64-apple-darwin"
-
-    runs-on: ${{ matrix.platform }}
-
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.v.outputs.tag }}
+      version: ${{ steps.v.outputs.version }}
+      prerelease: ${{ steps.v.outputs.prerelease }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - id: v
+        name: La etiqueta coincide con la versión del workspace
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          WORKSPACE=$(grep -m1 '^version = ' Cargo.toml | sed -E 's/version = "(.*)"/\1/')
+          if [ "$VERSION" != "$WORKSPACE" ]; then
+            echo "::error::La etiqueta $TAG no coincide con la versión del workspace ($WORKSPACE)"
+            exit 1
+          fi
+          PRE=false; case "$VERSION" in *-*) PRE=true;; esac
+          { echo "tag=$TAG"; echo "version=$VERSION"; echo "prerelease=$PRE"; } >> "$GITHUB_OUTPUT"
 
-      - name: Dependencias Linux
-        if: matrix.platform == 'ubuntu-22.04'
+  linux:
+    needs: verify
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.verify.outputs.tag }}
+      - name: Dependencias del sistema
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libssl-dev
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 12
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
+          sudo apt-get install -y pkg-config libxkbcommon-dev libwayland-dev libegl1-mesa-dev libgl1-mesa-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libfuse2
       - uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.targets }}
-
       - uses: swatinem/rust-cache@v2
+      - name: cargo-packager
+        uses: actions/cache@v4
+        id: packager
         with:
-          workspaces: "./src-tauri -> target"
-          key: ${{ matrix.platform }}
-
-      - run: pnpm install --frozen-lockfile
-
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: ~/.cargo/bin/cargo-packager
+          key: cargo-packager-${{ env.PACKAGER_VERSION }}-${{ runner.os }}
+      - if: steps.packager.outputs.cache-hit != 'true'
+        run: cargo install cargo-packager --locked --version "$PACKAGER_VERSION"
+      - run: cargo build --release -p novaflix
+      - name: Paquetes .deb y .AppImage
+        working-directory: crates/novaflix-app
+        run: cargo packager --release -f deb,appimage
+      - name: Nombres de artefacto (contrato de release-and-ci.md §5.2)
+        run: |
+          set -euo pipefail
+          V="${{ needs.verify.outputs.version }}"
+          mkdir -p dist
+          mv target/packager/novaflix_${V}_amd64.deb         "dist/NovaFlix_${V}_amd64.deb"
+          mv target/packager/novaflix_${V}_x86_64.AppImage   "dist/NovaFlix_${V}_amd64.AppImage"
+          ./scripts/make-tarball.sh "$V" target/release/novaflix dist
+      - name: Comprobar que el paquete Debian se llama nova-flix (lo exige el repositorio APT)
+        run: |
+          ar p "dist/NovaFlix_${{ needs.verify.outputs.version }}_amd64.deb" control.tar.gz | tar xzO control | grep -x 'Package: nova-flix'
+      - uses: actions/upload-artifact@v4
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "NovaFlix ${{ github.ref_name }}"
-          releaseBody: |
-            NovaFlix ${{ github.ref_name }}.
+          name: linux
+          path: dist/*
 
-            **Instaladores**
-            - Linux: `.deb` y `.AppImage`
-            - Windows: `.exe` (NSIS) y `.msi`
-            - macOS: `.dmg` universal (Apple Silicon + Intel)
-            - Arch: `novaflix-bin` vía `AUR `novaflix-bin` (paru -S novaflix-bin)`
+  arch:
+    needs: [verify, linux]
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Preparar contenedor
+        run: pacman -Syu --noconfirm --needed base-devel git sudo >/dev/null
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.verify.outputs.tag }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux
+          path: dist
+      - name: Construir novaflix-bin
+        run: |
+          set -euo pipefail
+          V="${{ needs.verify.outputs.version }}"
+          case "$V" in *-*) echo "pkgver de Arch no admite guiones: se omite el paquete para $V"; exit 0;; esac
+          useradd -m builder || true
+          mkdir -p /home/builder/build
+          cp packaging/arch/PKGBUILD "dist/novaflix-${V}-x86_64.tar.gz" /home/builder/build/
+          chown -R builder:builder /home/builder/build
+          sudo -u builder bash -c "cd /home/builder/build && NOVAFLIX_VERSION=$V makepkg --nodeps --noconfirm"
+          mkdir -p arch-out
+          cp /home/builder/build/novaflix-bin-${V}-1-x86_64.pkg.tar.zst arch-out/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arch
+          path: arch-out/*
+          if-no-files-found: ignore
 
-            Cambios: ver [CHANGELOG.md](https://github.com/novatic-cu/NovaFlix/blob/main/CHANGELOG.md).
+  windows:
+    needs: verify
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.verify.outputs.tag }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+      - name: cargo-packager
+        uses: actions/cache@v4
+        id: packager
+        with:
+          path: ~/.cargo/bin/cargo-packager.exe
+          key: cargo-packager-${{ env.PACKAGER_VERSION }}-${{ runner.os }}
+      - if: steps.packager.outputs.cache-hit != 'true'
+        run: cargo install cargo-packager --locked --version "$PACKAGER_VERSION"
+      - run: cargo build --release -p novaflix
+      - name: Instaladores NSIS y MSI
+        working-directory: crates/novaflix-app
+        run: cargo packager --release -f nsis,wix
+      - name: Nombres de artefacto
+        run: |
+          set -euo pipefail
+          V="${{ needs.verify.outputs.version }}"
+          mkdir -p dist
+          ls -la target/packager
+          cp target/packager/*setup.exe "dist/NovaFlix_${V}_x64-setup.exe"
+          cp target/packager/*.msi      "dist/NovaFlix_${V}_x64_en-US.msi"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*
 
-            Las builds de macOS no están firmadas ni notarizadas; abre el `.dmg` con clic derecho → Abrir la primera vez.
-          releaseDraft: false
-          prerelease: false
-          args: ${{ matrix.args }}
+  publish:
+    needs: [verify, linux, arch, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.verify.outputs.tag }}
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Sumas SHA-256
+        working-directory: artifacts
+        run: |
+          set -euo pipefail
+          ls -la
+          sha256sum * > SHA256SUMS
+          cat SHA256SUMS
+      - name: Cuerpo del release (desde CHANGELOG.md)
+        run: |
+          set -euo pipefail
+          V="${{ needs.verify.outputs.version }}"
+          {
+            ./scripts/changelog-section.sh "$V"
+            echo
+            echo "**Instaladores**"
+            echo "- Linux: \`.deb\`, \`.AppImage\`, \`.tar.gz\`"
+            echo "- Arch: \`novaflix-bin\` (solo versiones estables)"
+            echo "- Windows: \`.exe\` (NSIS) y \`.msi\`"
+            echo
+            echo "Verifica la descarga con \`sha256sum -c SHA256SUMS\`."
+            echo
+            echo "Windows puede mostrar el aviso de SmartScreen mientras los instaladores no estén firmados con Authenticode."
+          } > release-body.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.verify.outputs.tag }}
+          name: NovaFlix ${{ needs.verify.outputs.tag }}
+          body_path: release-body.md
+          prerelease: ${{ needs.verify.outputs.prerelease == 'true' }}
+          draft: false
+          files: artifacts/*

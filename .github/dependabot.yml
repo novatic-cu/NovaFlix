@@ -1,27 +1,17 @@
 version: 2
 
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: cargo
     directory: "/"
     schedule:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
     groups:
-      react:
-        patterns: ["react*", "@types/react*"]
-      tooling:
-        patterns: ["vite", "@vitejs/*", "typescript", "tailwindcss", "@tailwindcss/*"]
-
-  - package-ecosystem: cargo
-    directory: "/src-tauri"
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
-    groups:
-      tauri:
-        patterns: ["tauri*"]
+      egui:
+        patterns: ["egui*", "eframe", "epaint", "emath"]
+      tokio:
+        patterns: ["tokio*", "hyper*", "reqwest", "rustls*"]
 
   - package-ecosystem: github-actions
     directory: "/"

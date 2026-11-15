@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = ["crates/novaflix-core", "crates/novaflix-app"]
+
+[workspace.package]
+version = "2.0.0-alpha.1"
+edition = "2021"
+rust-version = "1.95"
+license = "PolyForm-Noncommercial-1.0.0"
+authors = ["Novatic"]
+repository = "https://github.com/novatic-cu/NovaFlix"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

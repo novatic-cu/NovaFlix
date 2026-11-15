@@ -1,0 +1,7 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NovaFlix">
+  <g fill="#000000">
+    <rect x="232" y="220" width="150" height="584" rx="20"/>
+    <rect x="642" y="220" width="150" height="584" rx="20"/>
+    <path d="M250 220H402L774 804H622Z" stroke="#000000" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+</svg>

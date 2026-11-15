@@ -18,17 +18,9 @@
   <rect width="1280" height="640" fill="url(#bg)"/>
   <circle cx="1150" cy="90" r="260" fill="#0A84FF" opacity="0.12"/>
 
-  <g transform="translate(112 190)">
-    <rect width="260" height="260" rx="60" fill="url(#tile)"/>
-    <g fill="url(#glyph)" transform="translate(0 0) scale(0.254)">
-      <rect x="292" y="276" width="96" height="472" rx="12"/>
-      <rect x="636" y="276" width="96" height="472" rx="12"/>
-      <path d="M388 276h96l248 472h-96z"/>
-    </g>
-    <path d="M212 40l8 22 22 8-22 8-8 22-8-22-22-8 22-8z" fill="#8CC6FF"/>
-  </g>
+  <image href="logo.svg" x="112" y="190" width="260" height="260"/>
 
   <text x="424" y="292" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="92" font-weight="700" letter-spacing="-3" fill="#FFFFFF">NovaFlix</text>
   <text x="428" y="352" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="30" font-weight="400" fill="#9FB3CC">Busca, organiza y descarga</text>
-  <text x="428" y="404" font-family="ui-monospace, 'SF Mono', monospace" font-size="20" fill="#5E7FA6">Linux · Windows · macOS · Arch</text>
+  <text x="428" y="404" font-family="ui-monospace, 'SF Mono', monospace" font-size="20" fill="#5E7FA6">Linux · Windows · Arch</text>
 </svg>

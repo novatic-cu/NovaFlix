@@ -2,11 +2,12 @@
 pkgname=novaflix-bin
 pkgver=0.1.0
 pkgrel=1
-pkgdesc="Buscador de escritorio para catalogos multimedia publicos"
+pkgdesc="Explorador de catálogos multimedia públicos"
 arch=('x86_64')
 url="https://github.com/novatic-cu/NovaFlix"
 license=('custom:PolyForm-Noncommercial-1.0.0')
-depends=('webkit2gtk-4.1' 'gtk3' 'openssl' 'hicolor-icon-theme')
+depends=('libxkbcommon' 'libxkbcommon-x11' 'wayland' 'libglvnd' 'libx11' 'libxcursor' 'libxi' 'dbus' 'hicolor-icon-theme')
+optdepends=('vlc: reproductor externo' 'mpv: reproductor externo')
 provides=('novaflix')
 conflicts=('novaflix')
 options=('!strip')
@@ -17,7 +18,7 @@ package() {
   install -Dm755 "${srcdir}/novaflix" "${pkgdir}/usr/bin/novaflix"
   install -Dm644 "${srcdir}/novaflix.desktop" "${pkgdir}/usr/share/applications/novaflix.desktop"
 
-  for size in 32 128 256 512; do
+  for size in 16 22 24 32 48 64 128 256 512; do
     install -Dm644 "${srcdir}/icons/novaflix-${size}.png" \
       "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/novaflix.png"
   done

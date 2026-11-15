@@ -15,15 +15,16 @@ permissions:
 
 jobs:
   analyze:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        language: ["javascript-typescript"]
+        language: ["rust"]
     steps:
       - uses: actions/checkout@v4
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          build-mode: none
           queries: security-and-quality
       - uses: github/codeql-action/analyze@v3

@@ -1,0 +1,26 @@
+name: winget
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Etiqueta del release (ej. v2.0.0)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    # Se activa creando la variable de repositorio WINGET_ENABLED=true y el secreto WINGET_TOKEN.
+    if: vars.WINGET_ENABLED == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: vedantmgoyal9/winget-releaser@v2
+        with:
+          identifier: Novatic.NovaFlix
+          installers-regex: '_x64-setup\.exe$'
+          release-tag: ${{ github.event.inputs.tag || github.event.release.tag_name }}
+          token: ${{ secrets.WINGET_TOKEN }}

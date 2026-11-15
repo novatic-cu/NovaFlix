@@ -19,11 +19,12 @@
 
 ## Checklist
 
-- [ ] `pnpm build` pasa
-- [ ] `cargo test` pasa
-- [ ] `cargo clippy -- -D warnings` pasa
-- [ ] Probado en Linux y/o Windows/macOS (indica cuál)
-- [ ] Sin colores literales ni card dentro de card
+- [ ] `cargo fmt --all -- --check` pasa
+- [ ] `cargo clippy --workspace --all-targets -- -D warnings` pasa
+- [ ] `cargo test --workspace` pasa
+- [ ] Probado en Linux y/o Windows (indica cuál)
+- [ ] Sin colores literales fuera de `theme.rs`
+- [ ] Si toca el comportamiento: spec/plan/contratos y `tasks.md` actualizados (con evidencia)
 - [ ] Capturas si hay cambios de UI
 - [ ] CHANGELOG actualizado si aplica
 

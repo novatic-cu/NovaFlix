@@ -10,7 +10,7 @@ body:
     id: version
     attributes:
       label: Versión de NovaFlix
-      placeholder: "0.1.0"
+      placeholder: "2.0.0-alpha.1"
     validations:
       required: true
   - type: dropdown
@@ -22,10 +22,34 @@ body:
         - Linux (AppImage)
         - Arch Linux
         - Windows
-        - macOS
         - Compilado desde código
     validations:
       required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Protocolo en uso (barra de estado)
+      options:
+        - HTTP
+        - FTP
+        - No lo sé
+    validations:
+      required: true
+  - type: dropdown
+    id: proxy
+    attributes:
+      label: ¿Te conectas detrás de un proxy?
+      options:
+        - "No"
+        - "Sí, del sistema"
+        - "Sí, personalizado"
+        - No lo sé
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Diagnóstico de red
+      description: "Si el problema es de conexión: Ajustes → Red → Diagnosticar → Copiar diagnóstico, y pégalo aquí (no incluye contraseñas)."
+      render: json
   - type: textarea
     id: steps
     attributes:
