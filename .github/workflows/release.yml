@@ -135,9 +135,13 @@ jobs:
       - if: steps.packager.outputs.cache-hit != 'true'
         run: cargo install cargo-packager --locked --version "$PACKAGER_VERSION"
       - run: cargo build --release -p novaflix
+      # WiX/MSI no admite versiones con pre-release alfanumerica (2.0.0-alpha.1):
+      # en pre-releases solo se genera el instalador NSIS.
       - name: Instaladores NSIS y MSI
         working-directory: crates/novaflix-app
-        run: cargo packager --release -f nsis,wix
+        run: |
+          if [ "${{ needs.verify.outputs.prerelease }}" = "true" ]; then F=nsis; else F=nsis,wix; fi
+          cargo packager --release -f "$F"
       - name: Nombres de artefacto
         run: |
           set -euo pipefail
@@ -145,7 +149,9 @@ jobs:
           mkdir -p dist
           ls -la target/packager
           cp target/packager/*setup.exe "dist/NovaFlix_${V}_x64-setup.exe"
-          cp target/packager/*.msi      "dist/NovaFlix_${V}_x64_en-US.msi"
+          if ls target/packager/*.msi >/dev/null 2>&1; then
+            cp target/packager/*.msi "dist/NovaFlix_${V}_x64_en-US.msi"
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: windows

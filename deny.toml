@@ -21,6 +21,8 @@ allow = [
   "CDLA-Permissive-2.0",
   "LicenseRef-ring",
   "OpenSSL",
+  "Ubuntu-font-1.0",
+  "PolyForm-Noncommercial-1.0.0",
 ]
 confidence-threshold = 0.8
 
