@@ -97,8 +97,8 @@ Estado a **2026-11-13**.
 - [x] **T-075** `codeql.yml` con `rust`; `dependabot.yml` sin npm y con cargo en `/`. *Evidencia*: `codeql.yml` (`rust`) y `dependabot.yml` (cargo `/` y actions) reescritos; YAML válido.
 - [~] **T-076** `audit.yml` + `deny.toml`. *Evidencia*: `audit.yml` y `deny.toml` escritos; **`cargo audit`/`cargo deny` no se han ejecutado** todavía.
 - [x] **T-077** Plantillas de issue: protocolo, proxy, pegar diagnóstico. *Evidencia*: `bug_report.yml` con protocolo, proxy y diagnóstico; `PULL_REQUEST_TEMPLATE.md` con los comandos de Rust.
-- [~] **T-078** README, CONTRIBUTING, CHANGELOG, SECURITY, `.gitignore`, `site/`. *Evidencia*: README, CONTRIBUTING, CHANGELOG, SECURITY y `.gitignore` reescritos; falta actualizar `site/` (portada y páginas APT/pacman).
-- [ ] **T-079** Primera etiqueta `v2.0.0-alpha.1` (prerelease) y verificación de artefactos.
+- [x] **T-078** README, CONTRIBUTING, CHANGELOG, SECURITY, `.gitignore`, `site/`. *Evidencia*: README reescrito para la v2; `site/index.html` y las páginas APT/pacman actualizadas (alpha, descargas desde Releases, aviso de repos estables); nuevo workflow `site.yml` que publica `site/` en `gh-pages` con `keep_files` (conserva `apt/` y `pacman/`); capturas sin la barra de estado (mostraba datos del proxy del autor).
+- [x] **T-079** Primera etiqueta `v2.0.0-alpha.1` (prerelease) y verificación de artefactos. *Evidencia*: el workflow `release` falló en Windows (MSI no admite `-alpha.1`); se corrigió (MSI solo en estables) y el release `v2.0.0-alpha.1` se publicó con `.deb`, `.AppImage`, `.tar.gz`, `-setup.exe` y `SHA256SUMS`. Esa etiqueta lleva SQLite vulnerable (RUSTSEC-2026-0459); queda sustituida por `v2.0.0-alpha.2`.
 
 ## Fase 7 · Endurecimiento
 

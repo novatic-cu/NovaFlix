@@ -152,6 +152,8 @@ Cada sección sigue el formato **Decisión → Razón → Alternativas descartad
 
 ---
 
+**Enmienda (alpha.1 → alpha.2): pósters reales.** El servidor guarda `poster.jpg`/`folder.jpg`/`landscape.jpg` dentro de muchas carpetas, así que la decisión de arriba queda como *respaldo*: se descubre el póster de la propia carpeta (listado + `GET` ≤ 6 MB), con caché en disco (`.img`, y `.none` con TTL negativo de 3 días); si no hay, se resuelve el episodio a su serie por el índice local (Series, Películas, Infantiles, Reality Shows, Documentales); y solo si tampoco existe se dibuja la portada generada. Se recortan las barras negras, se reduce a miniatura 384×576 y se descarga con un semáforo de concurrencia. La interfaz muestra **esqueletos** hasta que el póster está listo (`Loading → Ready | Missing`). Sigue sin llamar a servicios externos (Principio I): las imágenes salen del mismo servidor del catálogo.
+
 ## 10. Medición de rendimiento
 
 **Decisión**: `cargo test` con un índice sintético de 30.000 carpetas y 12.500 archivos para búsqueda (p95) y apertura de `cache.db`; el arranque a pantalla útil se mide con un temporizador interno (`--self-test --timing`).

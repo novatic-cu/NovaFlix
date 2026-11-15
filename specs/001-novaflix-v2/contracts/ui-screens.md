@@ -33,13 +33,16 @@ Ventana: 1180×780 por defecto, mínimo 960×640, centrada. Una sola instancia (
 
 **Datos**: `browse("/Recientes/")`, `sections()`, `favorites()`, `downloads()` (activas).
 
-| Bloque | Origen | Vacío |
+Pantalla de **altura fija** (sin *scroll* de página); cada zona desplaza por separado según dónde esté el cursor.
+
+| Bloque | Origen | Vacío / carga |
 |---|---|---|
-| Portada destacada | Las 5 carpetas más nuevas de `/Recientes/` (rota cada 8 s; no rota con «reducir movimiento») | Esqueleto mientras carga |
-| Continuar descargando | `downloads()` con estado `active/paused/queued` | Se oculta |
-| Novedades | Listado de `/Recientes/` (carpetas y archivos) ordenado por fecha descendente | «No se pudieron cargar las novedades» + *Reintentar* |
-| Tus favoritos | `favorites()` | Se oculta |
-| Categorías | `sections()` (secciones raíz del índice) con su número de carpetas | Se oculta hasta que haya índice |
+| Portada destacada | Novedades con póster listo (rota cada 8 s; no rota con «reducir movimiento») | Esqueleto mientras carga |
+| Categorías | `sections()` como chips con *scroll* horizontal | Se oculta hasta que haya índice |
+| Novedades | `/Recientes/` por fecha, en tantas filas como quepan; *scroll* horizontal por barra, rueda o arrastre | Esqueletos de tarjeta; «No se pudieron cargar las novedades» + *Reintentar* |
+| Descubre (solo ventanas ≥ 1000 px) | Mezcla aleatoria con semilla de Series/Inglés, Series/Español, Documentales, Recientes y el último año de Películas/Extranjeras; caja de alto fijo con *scroll* vertical; botón de barajar | Esqueletos de tarjeta |
+
+*Continuar descargando* y *Tus favoritos* no están en Inicio en esta versión (viven en Descargas y Biblioteca).
 
 **Interacciones**: clic en tarjeta → ficha; `Enter` en foco → ficha; «Ver todo» → Explorar en esa sección.
 

@@ -216,7 +216,7 @@ Detalle de estados y flujos en [contracts/ui-screens.md](contracts/ui-screens.md
 
 | Pantalla | Composición |
 |---|---|
-| Inicio | Dock · portada destacada (rota entre las novedades) · *Continuar descargando* · *Novedades* (carpeta `/Recientes/` del sitio, por fecha) · *Tus favoritos* · *Categorías* (una ficha por sección raíz). Las secciones del sitio son categorías, no títulos (research §14), por eso van como fichas y no como estanterías de portadas |
+| Inicio | **Altura fija, sin *scroll* de página.** Dock · cabecera (título, descargas, *Buscar*) · dos columnas: izquierda = portada destacada (póster real; fondo ambiental + tarjeta nítida si es vertical) + *Categorías* en chips con *scroll* horizontal + *Novedades* en tantas filas como quepan (tarjetas de 150–230 px; la portada recibe el resto, 170–380 px); derecha (340 px, solo si la ventana mide ≥ 1000 px) = *Descubre*, contenido al azar en una caja de alto fijo con *scroll* vertical propio y botón de barajar. Cada zona desplaza solo cuando el cursor está encima (*scroll* nativo de egui); el resto no mueve nada. Mientras un póster no está listo se muestran esqueletos. *Continuar descargando* y *Favoritos* viven en sus pantallas. Las secciones del sitio son categorías, no títulos (research §14) |
 | Buscar | Campo grande centrado al inicio → se desplaza arriba al escribir; resultados en rejilla de tarjetas (carpetas) y filas (archivos) |
 | Explorar | Migas de pan en cápsula + rejilla de carpetas + lista de archivos; botón *Descargar carpeta* |
 | Ficha | Panel `r.lg` con portada ampliada y lista de archivos |

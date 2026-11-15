@@ -5,185 +5,124 @@
 <h1 align="center">NovaFlix</h1>
 
 <p align="center">
-  Buscador de escritorio para catálogos multimedia públicos.<br/>
-  Búsqueda instantánea, favoritos, listas y descargas con reanudación.
+  Explorador de escritorio, con estilo de app de streaming, para el catálogo de <a href="https://visuales.uclv.cu/">visuales.uclv.cu</a>.<br/>
+  HTTP o FTP a tu elección, diagnóstico de red y descargas reanudables.
 </p>
 
 <p align="center">
-  <a href="../../releases"><img alt="Release" src="https://img.shields.io/github/v/release/novatic-cu/NovaFlix?color=0A84FF&label=release" /></a>
+  <a href="../../releases"><img alt="Release" src="https://img.shields.io/github/v/release/novatic-cu/NovaFlix?include_prereleases&color=0A84FF&label=release" /></a>
   <a href="LICENSE"><img alt="Licencia" src="https://img.shields.io/badge/licencia-PolyForm%20Noncommercial%201.0.0-1D1D1F" /></a>
-  <a href="../../actions/workflows/release.yml"><img alt="Build" src="https://github.com/novatic-cu/NovaFlix/actions/workflows/release.yml/badge.svg" /></a>
-  <img alt="Plataformas" src="https://img.shields.io/badge/linux%20·%20windows%20·%20macOS-informational?color=0A84FF" />
+  <a href="../../actions/workflows/ci.yml"><img alt="CI" src="https://github.com/novatic-cu/NovaFlix/actions/workflows/ci.yml/badge.svg" /></a>
+  <img alt="Plataformas" src="https://img.shields.io/badge/linux%20·%20windows-informational?color=0A84FF" />
 </p>
 
 ---
 
-**Sitio web:** <https://novatic-cu.github.io/NovaFlix/> · **Repositorios:** [APT](https://novatic-cu.github.io/NovaFlix/apt/) · [pacman](https://novatic-cu.github.io/NovaFlix/pacman/)
+**Sitio web:** <https://novatic-cu.github.io/NovaFlix/>
 
-NovaFlix indexa un catálogo público en una caché local desechable y ofrece una interfaz de escritorio rápida para encontrar, guardar y descargar contenido. No aloja contenido ni requiere cuenta.
+> **NovaFlix 2 está en alpha** (2.0.0-alpha.2). Es una reescritura completa en Rust de la v1 (Tauri/React), que queda descontinuada y archivada en la rama [`v1`](../../tree/v1). Puede haber fallos; el instalador de Windows aún no se ha probado en equipos reales.
+
+NovaFlix indexa el catálogo público en una caché local desechable y ofrece una interfaz nativa rápida para encontrar, guardar y descargar contenido. No aloja contenido ni requiere cuenta.
 
 ## Capturas
 
-| Buscar | Listas |
+| Inicio | Explorar |
 |---|---|
-| ![Buscar](docs/screenshots/search.png) | ![Listas](docs/screenshots/lists.png) |
+| ![Inicio](docs/screenshots/home.png) | ![Explorar](docs/screenshots/browse.png) |
 
-| Descargas | Ajustes |
+| Ficha de título | Tema claro |
 |---|---|
-| ![Descargas](docs/screenshots/downloads.png) | ![Ajustes](docs/screenshots/settings.png) |
-
-> Las capturas de `docs/screenshots/` son de referencia. Sustitúyelas por las tuyas manteniendo los nombres.
+| ![Ficha](docs/screenshots/sheet.png) | ![Tema claro](docs/screenshots/light.png) |
 
 ## Funciones
 
+- **Interfaz de streaming** («Nova Glass»): portada destacada, estanterías con pósters reales descubiertos en cada carpeta, categorías, contenido al azar y fichas por título. Esqueletos mientras cargan las imágenes.
+- **HTTP o FTP a elección**: Automático, HTTP o FTP. Cliente FTP propio de solo lectura (`MLSD`/`LIST`, `SIZE`, `REST`, `RETR`) con soporte de proxy SOCKS5.
+- **Diagnóstico de red** que prueba DNS, puerto 21, túnel `CONNECT` por el proxy y HTTPS, y explica el resultado en lenguaje llano. En Automático elige HTTP si FTP no es posible.
 - **Búsqueda FTS5** con prefijos y normalización leet: `Wick3d.For.Good.2025.1080p` se encuentra buscando `wicked`.
-- **Índice ligero en ~1 s**: 30.000 carpetas desde el árbol publicado; los archivos se listan al abrir cada carpeta.
-- **Crawl profundo opcional** para indexar también archivos sueltos.
-- **Favoritos** por contenido y por carpeta, con etiqueta y nota.
-- **Listas**: playlists ordenables y lista de "para ver" con estado *visto*.
-- **Descargas** con cola, reanudación por `Range`, progreso en vivo y contadores por ruta.
-- **Exportación M3U/M3U8** y reproducción con VLC/mpv/celluloid.
-- **Tema claro/oscuro** automático, `prefers-reduced-motion`, `prefers-reduced-transparency` y `prefers-contrast`.
+- **Índice ligero**: ~30.000 carpetas desde el árbol publicado; los archivos se listan al abrir cada carpeta.
+- **Descargas** con cola persistente, `.part`, reanudación (`Range`/`REST`), verificación de tamaño, límite de velocidad y carpetas completas.
+- **Favoritos y listas**, exportación M3U y reproducción con VLC/mpv.
+- **Tema oscuro/claro**, atajos de teclado y «reducir movimiento».
+- **Migración automática** de los datos de la v1 (copia `app.db.v1.bak`).
 
 ## Instalación
 
-### Debian / Ubuntu · repositorio APT
+Descarga desde [Releases](../../releases/tag/v2.0.0-alpha.2) y comprueba el fichero con `SHA256SUMS`.
+
+### Debian / Ubuntu
 
 ```bash
-curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg \
-  | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
-echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main" \
-  | sudo tee /etc/apt/sources.list.d/novaflix.list
-sudo apt update && sudo apt install nova-flix
+curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.deb
+sudo apt install ./NovaFlix_2.0.0-alpha.2_amd64.deb
 ```
 
-Actualizar: `sudo apt update && sudo apt upgrade nova-flix`. El paquete APT se llama `nova-flix`; el binario instalado es `novaflix`.
-
-<details>
-<summary>Clave de firma del repositorio</summary>
-
-Fingerprint: `F005 E863 F53A 70D6 0447  9A36 9FE8 FBEF 7C21 10F0`
-</details>
-
-### Debian / Ubuntu · paquete suelto
-
-```bash
-curl -LO https://github.com/novatic-cu/NovaFlix/releases/latest/download/NovaFlix_0.1.0_amd64.deb
-sudo apt install ./NovaFlix_0.1.0_amd64.deb
-```
-
-### Arch Linux · repositorio pacman (recomendado)
-
-```bash
-# pacman-key solo acepta ficheros locales: descarga la clave primero
-curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
-sudo pacman-key --add /tmp/novaflix.gpg
-sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
-
-# añade a /etc/pacman.conf
-[novaflix]
-SigLevel = Required DatabaseOptional
-Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
-
-sudo pacman -Sy novaflix-bin
-```
-
-Con el repositorio configurado, `paru -S novaflix-bin` también resuelve el paquete sin tocar AUR.
-
-### Arch Linux · AUR
-
-`aur.yml` mantiene `novaflix-bin` actualizado en cada release. El registro de cuentas de AUR está cerrado temporalmente, así que la primera publicación sigue pendiente; mientras tanto usa el repositorio pacman de arriba.
-
-### Arch Linux · paquete suelto
-
-```bash
-paru -U https://github.com/novatic-cu/NovaFlix/releases/latest/download/novaflix-bin-0.1.0-1-x86_64.pkg.tar.zst
-```
+El paquete se llama `nova-flix`; el binario instalado es `novaflix`.
 
 ### Linux · AppImage
 
 ```bash
-curl -LO https://github.com/novatic-cu/NovaFlix/releases/latest/download/NovaFlix_0.1.0_amd64.AppImage
-chmod +x NovaFlix_0.1.0_amd64.AppImage
-./NovaFlix_0.1.0_amd64.AppImage
+curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.AppImage
+chmod +x NovaFlix_2.0.0-alpha.2_amd64.AppImage
+./NovaFlix_2.0.0-alpha.2_amd64.AppImage
 ```
+
+### Linux · tarball (Arch y otras)
+
+`novaflix-2.0.0-alpha.2-x86_64.tar.gz` contiene el binario, el `.desktop` y los iconos. En Arch, el paquete `novaflix-bin` solo se publica en las versiones estables.
 
 ### Windows
 
-```powershell
-winget install Novatic.NovaFlix
-```
+Descarga `NovaFlix_2.0.0-alpha.2_x64-setup.exe` y ejecútalo (Windows 10/11, 64 bits). No requiere WebView2. El instalador no está firmado, así que SmartScreen puede avisar la primera vez. El `.msi` llegará con la primera versión estable.
 
-Si el manifiesto aún no está publicado en winget, descarga `NovaFlix_0.1.0_x64-setup.exe` (NSIS) o el `.msi` desde [Releases](../../releases). Requiere WebView2 (incluido en Windows 10/11).
+### Repositorios APT y pacman
 
-### macOS
-
-```bash
-brew install --cask novatic-cu/tap/novaflix
-```
-
-O descarga el `.dmg` de [Releases](../../releases). Las builds no están firmadas ni notarizadas: la primera vez, clic derecho → *Abrir*.
-
+Publican solo versiones **estables**. Hoy contienen la v1; la v2 llegará con su primera versión estable. Detalles en el [sitio](https://novatic-cu.github.io/NovaFlix/).
 
 ## Desarrollo
 
-Requisitos: Node 24, pnpm 12, Rust 1.77+, WebKitGTK 4.1 en Linux.
+Requisitos: Rust ≥ 1.95. En Linux, cabeceras de X11/Wayland y OpenGL (ver [CONTRIBUTING.md](CONTRIBUTING.md)).
 
 ```bash
-pnpm install
-pnpm tauri dev
+cargo run -p novaflix                     # aplicación
+cargo test --workspace                    # pruebas
+cargo clippy --workspace --all-targets -- -D warnings
+NOVAFLIX_DATA_DIR=/tmp/nf cargo run -p novaflix   # datos aislados
 ```
 
-Compilar instaladores:
-
-```bash
-pnpm tauri build --bundles deb        # Debian/Ubuntu
-pnpm tauri build --bundles appimage   # AppImage
-pnpm tauri build --bundles nsis,msi   # Windows
-pnpm tauri build --bundles dmg,app    # macOS
-```
+Instaladores: `cargo install cargo-packager` y `cargo packager --release` desde `crates/novaflix-app` (ver [`specs/001-novaflix-v2/release-and-ci.md`](specs/001-novaflix-v2/release-and-ci.md)).
 
 ## Arquitectura
 
 ```
-src/                     React 19 + TypeScript
-  components/            Sidebar, Sheet, ItemRow, Toasts, AddToList
-  screens/               Search, Browse, Favorites, Lists, Downloads, Settings
-  lib/                   IPC tipado, acciones, formato, tipos
-src-tauri/src/
-  commands.rs            superficie IPC
-  index.rs               bootstrap, FTS, browse, crawl
-  db.rs                  esquema SQLite y helpers
-  catalog.rs             cliente HTTP + parser del autoindex
-  downloads.rs           cola con Range/resume y eventos
-  library.rs             favoritos, listas, contadores, M3U, reproductor
-  norm.rs                normalización leet + extracción de año
+crates/novaflix-core/   biblioteca sin interfaz
+  transport/            HTTP (reqwest), FTP propio, diagnóstico de red
+  catalog.rs index.rs   parser de listados, índice FTS5
+  downloads.rs          cola con reanudación
+  library.rs posters.rs favoritos y listas, descubrimiento de pósters
+  migrate.rs            migración desde la v1
+crates/novaflix-app/    aplicación egui/eframe
+  screens/              inicio, buscar, explorar, ficha, biblioteca, descargas, ajustes
+specs/001-novaflix-v2/  especificación (Spec-Driven Development)
+docs/adr/               decisiones de arquitectura
 ```
 
-Dos bases SQLite:
-
-| Base | Contenido | Tamaño | Vida |
-|---|---|---|---|
-| `cache.db` | índice de rutas y listados visitados | 6–90 MB | desechable |
-| `app.db` | favoritos, listas, contadores, ajustes | < 5 MB | respaldo |
-
-Rutas: Linux `~/.local/share/com.novatic.novaflix/` · Windows `%APPDATA%\com.novatic.novaflix\`.
+La aplicación y el núcleo se comunican por métodos de `Core` y un canal de eventos. Datos en `~/.local/share/com.novatic.novaflix/` (Linux) o `%APPDATA%\com.novatic.novaflix\` (Windows): `cache.db` (desechable) y `app.db` (favoritos, listas, ajustes).
 
 ## Seguridad y privacidad
 
-- Sin cuentas, sin telemetría, sin analytics.
-- Host allowlist en el backend y CSP estricta en el webview.
-- TLS verificado; descargas a `.part` con nombre saneado antes de renombrar.
-- Las dependencias se actualizan con Dependabot y se analizan con CodeQL.
+- Sin cuentas, sin telemetría, sin analítica. Solo lectura: nunca modifica el servidor.
+- TLS verificado; la contraseña del proxy solo vive en memoria; descargas a `.part` con nombre saneado.
+- Dependencias vigiladas con `cargo-audit`, `cargo-deny`, CodeQL y Dependabot.
 
-Para reportar vulnerabilidades: [SECURITY.md](SECURITY.md).
+Vulnerabilidades: [SECURITY.md](SECURITY.md).
 
 ## Contribuir
 
-Issues y pull requests son bienvenidos. Lee [CONTRIBUTING.md](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md).
+Lee [CONTRIBUTING.md](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md). Todo cambio de comportamiento parte de la especificación en `specs/`.
 
 ## Licencia
 
-**PolyForm Noncommercial 1.0.0**. Uso gratuito para fines personales, educativos, de investigación y para organizaciones sin ánimo de lucro. El uso comercial, la reventa o el servicio alojado requieren una licencia comercial: consulta [COMMERCIAL.md](COMMERCIAL.md).
+**PolyForm Noncommercial 1.0.0**: gratis para uso personal, educativo, de investigación y organizaciones sin ánimo de lucro. El uso comercial requiere licencia: [COMMERCIAL.md](COMMERCIAL.md).
 
-NovaFlix no aloja ni redistribuye contenido; indexa un catálogo público y la descarga es responsabilidad del usuario.
+NovaFlix no aloja ni redistribuye contenido; la descarga es responsabilidad del usuario.

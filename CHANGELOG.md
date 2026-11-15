@@ -2,6 +2,25 @@
 
 Todas las versiones relevantes se documentan aquí. Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y versionado [SemVer](https://semver.org/lang/es/).
 
+## [2.0.0-alpha.2] — 2026-11-14
+
+### Añadido
+
+- Pósters reales descubiertos en la carpeta de cada título (con caché en disco y resolución episodio → serie); esqueletos mientras cargan.
+- Inicio de altura fija: portada, categorías en chips, Novedades en tantas filas como quepan y **Descubre** (contenido al azar con *scroll* propio); cada zona desplaza solo bajo el cursor.
+- Workflow `site.yml` que publica `site/` en GitHub Pages sin tocar los repositorios APT/pacman.
+
+### Cambiado
+
+- Sitio web y README reescritos para la v2 (alpha, descargas desde Releases, solo Linux y Windows).
+- Los releases alpha no generan `.msi` (WiX no admite versiones con pre-release alfanumérica); solo NSIS.
+
+### Corregido
+
+- **Seguridad**: `rusqlite` 0.42 (SQLite 3.54) corrige RUSTSEC-2026-0459.
+- CI: permisos de `cargo-audit` y licencias permitidas en `cargo-deny`.
+- Las capturas de `docs/` ya no muestran la barra de estado con datos del proxy.
+
 ## [2.0.0-alpha.1] — 2026-11-14
 
 Reescritura completa en Rust (la versión 1 queda en la rama `v1`).

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>NovaFlix — NOVATIC</title>
-<meta name="description" content="NovaFlix indexa catálogos multimedia públicos en una caché local y los convierte en una biblioteca privada: búsqueda instantánea, favoritos, listas y descargas reanudables." />
+<meta name="description" content="NovaFlix 2: aplicación nativa en Rust para explorar, buscar y descargar el catálogo de visuales.uclv.cu por HTTP o FTP, con diagnóstico de red y soporte de proxy." />
 <meta name="theme-color" content="#0A1420" />
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
 <link rel="stylesheet" href="assets/fonts.css" />
@@ -25,7 +25,7 @@
       <a href="#captura">Capturas</a>
       <a href="#licencia">Licencia</a>
     </nav>
-    <a class="btn btn-primary btn-sm" href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargar</a>
+    <a class="btn btn-primary btn-sm" href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Descargar</a>
   </div>
 </header>
 
@@ -33,41 +33,41 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <span class="kicker"><span class="kicker-line"></span>Software de escritorio · v0.1.0</span>
-        <h1 class="hero-title">Todo tu catálogo,<br /><em>buscable</em> en un segundo.</h1>
+        <span class="kicker"><span class="kicker-line"></span>Aplicación de escritorio · v2.0.0-alpha.2 (alpha)</span>
+        <h1 class="hero-title">Tu catálogo, como<br />una app de <em>streaming</em>.</h1>
         <p class="hero-subtitle">
-          NovaFlix convierte un catálogo multimedia público en una biblioteca privada:
-          búsqueda instantánea, favoritos, listas y descargas reanudables.
-          Sin cuentas, sin telemetría.
+          NovaFlix 2 es una aplicación nativa en Rust para explorar, buscar y descargar el
+          catálogo de visuales.uclv.cu con portadas, estanterías y descargas reanudables.
+          Habla HTTP o FTP a tu elección y entiende tu proxy. Sin cuentas, sin telemetría.
         </p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargar</a>
+          <a class="btn btn-primary" href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Descargar</a>
           <a class="btn btn-ghost" href="#instalar">Cómo instalar</a>
         </div>
-        <p class="hero-note">Linux · Windows · macOS · Arch — instaladores firmados, paquetes de 4 MB.</p>
+        <p class="hero-note">Linux y Windows · paquetes de ~11 MB · sin WebView, sin navegador embebido.</p>
       </div>
       <div class="hero-art">
         <div class="hero-shot">
-          <img src="assets/search.png" alt="Búsqueda de NovaFlix con resultados del catálogo" />
+          <img src="assets/home.jpg" alt="Inicio de NovaFlix con portada destacada, novedades y categorías" />
         </div>
         <div class="hero-badge">
           <span class="hero-badge-label">Índice local</span>
-          <span class="hero-badge-value">30.000 carpetas en 1 s</span>
+          <span class="hero-badge-value">30.000 carpetas indexadas</span>
         </div>
       </div>
     </div>
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-value">1 s</div>
-        <div class="hero-stat-label">Indexación inicial</div>
+        <div class="hero-stat-value">HTTP · FTP</div>
+        <div class="hero-stat-label">A elección del usuario</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">4</div>
-        <div class="hero-stat-label">Plataformas</div>
+        <div class="hero-stat-value">2</div>
+        <div class="hero-stat-label">Plataformas: Linux y Windows</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">4 MB</div>
+        <div class="hero-stat-value">11 MB</div>
         <div class="hero-stat-label">Instalador .deb</div>
       </div>
       <div class="hero-stat">
@@ -80,22 +80,18 @@
 
 <section class="section" id="producto" style="padding: 72px 0;">
   <div class="container">
-    <div class="platforms">
+    <div class="platforms platforms-3">
       <div class="platform">
         <span class="platform-name">Debian · Ubuntu</span>
-        <span class="platform-meta">APT · .deb</span>
+        <span class="platform-meta">.deb · AppImage</span>
       </div>
       <div class="platform">
-        <span class="platform-name">Arch Linux</span>
-        <span class="platform-meta">pacman · AUR</span>
+        <span class="platform-name">Linux (genérico) · Arch</span>
+        <span class="platform-meta">.tar.gz · AppImage</span>
       </div>
       <div class="platform">
-        <span class="platform-name">macOS</span>
-        <span class="platform-meta">Homebrew · DMG universal</span>
-      </div>
-      <div class="platform">
-        <span class="platform-name">Windows</span>
-        <span class="platform-meta">NSIS · MSI · winget</span>
+        <span class="platform-name">Windows 10 · 11</span>
+        <span class="platform-meta">Instalador NSIS (.exe)</span>
       </div>
     </div>
   </div>
@@ -107,40 +103,40 @@
       <span class="kicker"><span class="kicker-line"></span>Producto</span>
       <h2 class="section-title">Menos fricción, más biblioteca.</h2>
       <p class="section-subtitle">
-        Un cliente nativo, no un navegador disfrazado. Todo lo que haces se queda en tu equipo.
+        Reescrito desde cero en Rust: un cliente nativo, rápido y que se queda en tu equipo.
       </p>
     </div>
 
     <div class="features">
       <div class="feature">
         <div class="feature-num">01</div>
+        <h3 class="feature-title">Interfaz de streaming</h3>
+        <p class="feature-text">Portada destacada, estanterías con pósters reales y categorías. Pensada como una app de vídeo, no como un cliente de archivos.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <h3 class="feature-title">HTTP o FTP, tú eliges</h3>
+        <p class="feature-text">Automático, HTTP o FTP. Cliente FTP propio de solo lectura con soporte de proxy SOCKS5.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <h3 class="feature-title">Entiende tu proxy</h3>
+        <p class="feature-text">El diagnóstico prueba DNS, puerto 21, túnel CONNECT y HTTPS y te explica con palabras llanas qué falla y qué hacer.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
         <h3 class="feature-title">Búsqueda que entiende nombres sucios</h3>
         <p class="feature-text">FTS5 con normalización leet y prefijos: <em>Wick3d.For.Good.2025.1080p</em> aparece buscando <em>wicked</em>.</p>
       </div>
       <div class="feature">
-        <div class="feature-num">02</div>
-        <h3 class="feature-title">Índice ligero, sin espejos</h3>
-        <p class="feature-text">30.000 directorios en un segundo desde el árbol publicado. Los archivos se listan al abrir la carpeta.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-num">03</div>
-        <h3 class="feature-title">Explorador con listados en vivo</h3>
-        <p class="feature-text">Tamaños, fechas y caché LRU configurable. El catálogo completo queda a un doble clic.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-num">04</div>
-        <h3 class="feature-title">Favoritos y listas</h3>
-        <p class="feature-text">Guarda contenidos o carpetas enteras. Playlists ordenables y cola de pendientes con estado visto.</p>
-      </div>
-      <div class="feature">
         <div class="feature-num">05</div>
         <h3 class="feature-title">Descargas reanudables</h3>
-        <p class="feature-text">Cola, progreso en vivo, reanudación por Range y contadores por cada ruta descargada.</p>
+        <p class="feature-text">Cola persistente, <code>.part</code>, reanudación por Range o REST, límite de velocidad y carpetas completas.</p>
       </div>
       <div class="feature">
         <div class="feature-num">06</div>
         <h3 class="feature-title">Tus datos, separados</h3>
-        <p class="feature-text">La caché es desechable; favoritos, listas y ajustes viven en una base aparte que nunca se borra.</p>
+        <p class="feature-text">La caché es desechable; favoritos, listas y ajustes viven en una base aparte. Migra solo los datos de la v1.</p>
       </div>
     </div>
   </div>
@@ -150,30 +146,54 @@
   <div class="container">
     <div class="section-header">
       <span class="kicker"><span class="kicker-line"></span>Instalación</span>
-      <h2 class="section-title">Sin descargar el repositorio.</h2>
-      <p class="section-subtitle">Elige tu plataforma. Los repositorios se actualizan solos con cada release.</p>
+      <h2 class="section-title">Descarga e instala.</h2>
+      <p class="section-subtitle">NovaFlix 2.0.0-alpha.2 es una versión alpha: se distribuye desde Releases. Los repositorios APT y pacman se actualizarán con la primera versión estable.</p>
     </div>
 
     <div class="install-grid">
       <div class="install-card">
         <div class="install-head">
           <span class="install-name">Debian · Ubuntu</span>
-          <span class="install-tag">APT</span>
+          <span class="install-tag">.deb</span>
         </div>
-        <p class="install-desc">Repositorio APT firmado, actualizable con <code>apt upgrade</code>.</p>
+        <p class="install-desc">Paquete <code>nova-flix</code>; el binario es <code>novaflix</code>.</p>
         <div class="code">
-          <button class="copy-btn" data-copy="curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
-echo &quot;deb [signed-by=/usr/share/keyrings/novaflix.gpg] https://novatic-cu.github.io/NovaFlix/apt stable main&quot; | sudo tee /etc/apt/sources.list.d/novaflix.list
-sudo apt update &amp;&amp; sudo apt install nova-flix">Copiar</button>
-          <pre><span class="c"># clave + repositorio</span>
-curl -fsSL https://novatic-cu.github.io/NovaFlix/apt/novaflix.gpg \
-  | sudo gpg --dearmor -o /usr/share/keyrings/novaflix.gpg
-echo "deb [signed-by=/usr/share/keyrings/novaflix.gpg] \
-https://novatic-cu.github.io/NovaFlix/apt stable main" \
-  | sudo tee /etc/apt/sources.list.d/novaflix.list
-sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
+          <button class="copy-btn" data-copy="curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.deb
+sudo apt install ./NovaFlix_2.0.0-alpha.2_amd64.deb">Copiar</button>
+          <pre>curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.deb
+sudo apt install ./NovaFlix_2.0.0-alpha.2_amd64.deb</pre>
         </div>
-        <div class="install-foot"><a href="apt/">Ver repositorio →</a></div>
+        <div class="install-foot"><a href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Ver release →</a></div>
+      </div>
+
+      <div class="install-card">
+        <div class="install-head">
+          <span class="install-name">Linux</span>
+          <span class="install-tag">AppImage</span>
+        </div>
+        <p class="install-desc">Funciona en cualquier distribución reciente, sin instalar nada.</p>
+        <div class="code">
+          <button class="copy-btn" data-copy="curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.AppImage
+chmod +x NovaFlix_2.0.0-alpha.2_amd64.AppImage
+./NovaFlix_2.0.0-alpha.2_amd64.AppImage">Copiar</button>
+          <pre>curl -LO https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_amd64.AppImage
+chmod +x NovaFlix_2.0.0-alpha.2_amd64.AppImage
+./NovaFlix_2.0.0-alpha.2_amd64.AppImage</pre>
+        </div>
+        <div class="install-foot"><a href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Ver release →</a><span>También hay <code>.tar.gz</code></span></div>
+      </div>
+
+      <div class="install-card">
+        <div class="install-head">
+          <span class="install-name">Windows</span>
+          <span class="install-tag">NSIS</span>
+        </div>
+        <p class="install-desc">Instalador para Windows 10 y 11 (64 bits). No necesita WebView2. Sin firmar: SmartScreen puede avisar la primera vez.</p>
+        <div class="code">
+          <button class="copy-btn" data-copy="https://github.com/novatic-cu/NovaFlix/releases/download/v2.0.0-alpha.2/NovaFlix_2.0.0-alpha.2_x64-setup.exe">Copiar</button>
+          <pre>NovaFlix_2.0.0-alpha.2_x64-setup.exe</pre>
+        </div>
+        <div class="install-foot"><a href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Descargar .exe →</a><span>Sin probar en equipos reales</span></div>
       </div>
 
       <div class="install-card">
@@ -181,53 +201,19 @@ sudo apt update &amp;&amp; sudo apt install nova-flix</pre>
           <span class="install-name">Arch Linux</span>
           <span class="install-tag">pacman</span>
         </div>
-        <p class="install-desc">Repositorio pacman propio, firmado. <code>paru</code> también lo resuelve.</p>
+        <p class="install-desc">El repositorio pacman seguirá ofreciendo la v1 hasta la primera estable de la v2. Mientras, usa el AppImage o el <code>.tar.gz</code>.</p>
         <div class="code">
-          <button class="copy-btn" data-copy="curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
-sudo pacman-key --add /tmp/novaflix.gpg
-sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
-sudo pacman -Sy novaflix-bin">Copiar</button>
-          <pre><span class="c"># clave del repositorio (pacman-key no acepta URLs)</span>
-curl -fsSL https://novatic-cu.github.io/NovaFlix/pacman/x86_64/novaflix.gpg -o /tmp/novaflix.gpg
-sudo pacman-key --add /tmp/novaflix.gpg
-sudo pacman-key --lsign-key F005E863F53A70D604479A369FE8FBEF7C2110F0
-
-<span class="c"># /etc/pacman.conf</span>
-[novaflix]
-SigLevel = Required DatabaseOptional
-Server = https://novatic-cu.github.io/NovaFlix/pacman/$arch
-
+          <pre><span class="c"># tras la primera estable</span>
 sudo pacman -Sy novaflix-bin</pre>
         </div>
-        <div class="install-foot"><a href="pacman/">Ver repositorio →</a><span>AUR pendiente de registro</span></div>
-      </div>
-
-      <div class="install-card">
-        <div class="install-head">
-          <span class="install-name">macOS</span>
-          <span class="install-tag">Homebrew</span>
-        </div>
-        <p class="install-desc">DMG universal para Apple Silicon e Intel. Sin firmar: primera apertura con clic derecho → Abrir.</p>
-        <div class="code">
-          <button class="copy-btn" data-copy="brew install --cask novatic-cu/tap/novaflix">Copiar</button>
-          <pre>brew install --cask novatic-cu/tap/novaflix</pre>
-        </div>
-        <div class="install-foot"><a href="https://github.com/novatic-cu/homebrew-tap">Tap →</a></div>
-      </div>
-
-      <div class="install-card">
-        <div class="install-head">
-          <span class="install-name">Windows</span>
-          <span class="install-tag">winget</span>
-        </div>
-        <p class="install-desc">Instalador NSIS o MSI. Requiere WebView2 (incluido en Windows 10/11).</p>
-        <div class="code">
-          <button class="copy-btn" data-copy="winget install Novatic.NovaFlix">Copiar</button>
-          <pre>winget install Novatic.NovaFlix</pre>
-        </div>
-        <div class="install-foot"><a href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargar .exe →</a><span>winget en revisión</span></div>
+        <div class="install-foot"><a href="pacman/">Ver repositorio →</a><span>APT y pacman: ver nota</span></div>
       </div>
     </div>
+
+    <p class="step-text" style="margin-top: 28px;">
+      Comprueba la descarga con <code>SHA256SUMS</code>, publicado en cada release.
+      ¿Vienes de la v1? Tus favoritos, listas y ajustes se migran solos la primera vez, con copia de seguridad.
+    </p>
   </div>
 </section>
 
@@ -235,18 +221,18 @@ sudo pacman -Sy novaflix-bin</pre>
   <div class="container">
     <div class="section-header">
       <span class="kicker"><span class="kicker-line"></span>Captura</span>
-      <h2 class="section-title">Hecho para el teclado.</h2>
-      <p class="section-subtitle">Ctrl K abre la búsqueda. Enter abre la carpeta. El resto es lectura.</p>
+      <h2 class="section-title">Hecha para el catálogo.</h2>
+      <p class="section-subtitle">Ctrl K abre la búsqueda. Explora por carpetas, abre la ficha de un título y descarga lo que quieras. Tema oscuro y claro.</p>
     </div>
 
     <div class="shot-frame">
       <div class="shot-bar">
         <span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span>
       </div>
-      <img src="assets/lists.png" alt="Listas de reproducción en NovaFlix" />
+      <img src="assets/browse.jpg" alt="Explorador de NovaFlix con la carpeta Películas / Extranjeras / 2025" />
       <div class="shot-caption">
-        <span>Listas y pendientes · NovaFlix 0.1.0</span>
-        <span>Linux · 1440 × 920</span>
+        <span>Explorar · NovaFlix 2.0.0-alpha.2</span>
+        <span>Linux · tema oscuro</span>
       </div>
     </div>
   </div>
@@ -276,9 +262,9 @@ sudo pacman -Sy novaflix-bin</pre>
       <h2 class="section-title">Nada sale de tu equipo.</h2>
       <ul class="list" style="margin-top: 26px;">
         <li>Sin cuentas, sin telemetría, sin analítica.</li>
-        <li>Allowlist de un único host y CSP estricta en el webview.</li>
-        <li>TLS verificado y nombres saneados antes de escribir en disco.</li>
-        <li>Consultas SQLite parametrizadas y dependencias auditadas con CodeQL y Dependabot.</li>
+        <li>Solo lectura: nunca sube, borra ni renombra nada en el servidor.</li>
+        <li>TLS verificado, contraseña del proxy solo en memoria y nombres saneados antes de escribir en disco.</li>
+        <li>Consultas SQLite parametrizadas y dependencias auditadas con cargo-audit, cargo-deny, CodeQL y Dependabot.</li>
         <li>Caché desechable separada de tus favoritos, listas y contadores.</li>
       </ul>
       <div style="margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap;">
@@ -299,10 +285,10 @@ sudo pacman -Sy novaflix-bin</pre>
       <div class="footer-col">
         <h5>Producto</h5>
         <ul>
-          <li><a href="https://github.com/novatic-cu/NovaFlix/releases/latest">Descargas</a></li>
+          <li><a href="https://github.com/novatic-cu/NovaFlix/releases/tag/v2.0.0-alpha.2">Descargas</a></li>
           <li><a href="#instalar">Instalación</a></li>
-          <li><a href="apt/">Repositorio APT</a></li>
-          <li><a href="pacman/">Repositorio pacman</a></li>
+          <li><a href="apt/">Repositorio APT (v1)</a></li>
+          <li><a href="pacman/">Repositorio pacman (v1)</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -324,7 +310,7 @@ sudo pacman -Sy novaflix-bin</pre>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 NOVATIC S.U.R.L. · NovaFlix 0.1.0</span>
+      <span>© 2026 NOVATIC S.U.R.L. · NovaFlix 2.0.0-alpha.2</span>
       <span class="footer-legal-links">
         <a href="https://github.com/novatic-cu">GitHub</a>
         <a href="#licencia">Licencia</a>
