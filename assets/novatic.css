@@ -142,14 +142,15 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* ---------- platforms strip ---------- */
 .platforms { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); }
+.platforms-3 { grid-template-columns: repeat(3, 1fr); }
 .platform { padding: 30px 28px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 5px; }
 .platform:first-child { border-left: none; padding-left: 0; }
 .platform-name { font-family: var(--serif); font-size: 24px; line-height: 1; }
 .platform-meta { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); }
 
 /* ---------- install ---------- */
-.install-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
-.install-card { border: 1px solid var(--line); background: var(--white); padding: 30px; border-radius: var(--radius); display: flex; flex-direction: column; gap: 16px; }
+.install-grid { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.install-card { border: 1px solid var(--line); background: var(--white); padding: 30px; border-radius: var(--radius); display: flex; min-width: 0; flex-direction: column; gap: 16px; }
 .install-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .install-name { font-family: var(--serif); font-size: 28px; line-height: 1; }
 .install-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
